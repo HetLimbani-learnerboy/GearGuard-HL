@@ -19,7 +19,6 @@ export default function DashboardPage() {
         >
           Maintenance
         </div>
-        <div className="sidebar-item" onClick={()=>{navigate('/equipmentpage')}}>Equipment</div>
         <div className="sidebar-item" onClick={()=>{navigate('/workcenterpageall')}}>Work Centers</div>
         <div className="sidebar-item" onClick={()=>{navigate('/teampageall')}}>Teams</div>
       </aside>
