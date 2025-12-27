@@ -15,9 +15,9 @@ const TeamsPage = () => {
   }, [search]);
 
   const handleSelect = (team) => {
-    setSelectedTeam(team);
-    localStorage.setItem("selectedTeam", JSON.stringify(team));
-  };
+  localStorage.setItem("selectedTeam", JSON.stringify(team));
+  navigate(-1); // ⬅️ go back to modal page
+};
 
   return (
     <div style={{ padding: 30 }}>
