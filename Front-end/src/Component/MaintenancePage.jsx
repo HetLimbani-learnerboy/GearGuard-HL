@@ -69,7 +69,6 @@ export default function MaintenancePage() {
 
     const [movedItem] = sourceItems.splice(result.source.index, 1);
     movedItem.status = destCol;
-
     destItems.splice(result.destination.index, 0, movedItem);
 
     setRequests({
@@ -116,7 +115,7 @@ export default function MaintenancePage() {
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  <h4>{col.label}</h4>
+                  <h4 className="column-title">{col.label}</h4>
 
                   {requests[col.key].map((req, index) => (
                     <Draggable

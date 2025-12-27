@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import "./TeamsPageall.css";
 
 const TeamsPageall = () => {
-  const navigate = useNavigate();
   const [teams, setTeams] = useState([]);
   const [search, setSearch] = useState("");
 
@@ -16,20 +14,23 @@ const TeamsPageall = () => {
 
   return (
     <div className="teams-page">
-      <h2 className="page-title">Teams Directory</h2>
+      {/* Header */}
+      <div className="teams-header">
+        <h1>Teams Directory</h1>
+        <p>View and manage all maintenance teams across locations.</p>
 
-      {/* Search */}
-      <input
-        className="search-input"
-        type="text"
-        placeholder="Search by team name or location..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+        <input
+          className="search-input"
+          type="text"
+          placeholder="Search by team name or location..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
 
-      {/* Table */}
-      <div className="table-container">
-        <table className="data-table">
+      {/* Table Card */}
+      <div className="teams-card">
+        <table className="teams-table">
           <thead>
             <tr>
               <th>Team Name</th>
@@ -49,21 +50,22 @@ const TeamsPageall = () => {
             ) : (
               teams.map((team) => (
                 <tr key={team._id}>
-                  <td>{team.team_name}</td>
+                  <td className="team-name">{team.team_name}</td>
                   <td>{team.company_location}</td>
-                  <td>{team.team_members.join(", ")}</td>
-                  <td>{team.team_members.length}</td>
+                  <td className="members">
+                    {team.team_members.join(", ")}
+                  </td>
+                  <td>
+                    <span className="count-badge">
+                      {team.team_members.length}
+                    </span>
+                  </td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
       </div>
-
-      {/* Back Button */}
-      <button className="back-btn" onClick={() => navigate(-1)}>
-        ← Back
-      </button>
     </div>
   );
 };
