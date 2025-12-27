@@ -1,7 +1,7 @@
 import "./DashboardPage.css";
 import { useNavigate } from "react-router-dom";
-import { FiUser } from "react-icons/fi";
-import Navbar from "./Navbar";
+// import { FiUser } from "react-icons/fi";
+// import Navbar from "./Navbar";
 
 export default function DashboardPage() {
   return (
@@ -21,8 +21,8 @@ export default function DashboardPage() {
       {/* Main */}
       <div style={{ flex: 1 }}>
         
-        {/* Navbar */}
-        <Navbar title="Dashboard" />
+        {/* Navbar
+        <Navbar title="Dashboard" /> */}
 
 
         <main style={{ padding: "18px" }}>
