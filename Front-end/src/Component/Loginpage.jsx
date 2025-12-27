@@ -9,16 +9,37 @@ const Loginpage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("GearGuard Login:", { email, password });
+
+    try {
+      const response = await fetch("http://localhost:3021/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.message || "Login failed");
+        return;
+      }
+
+      alert("Login successful");
+      navigate("/dashboard");
+
+    } catch (error) {
+      alert("Server not reachable");
+      console.error(error);
+    }
   };
 
   return (
     <div className="gearguard-split-screen">
       <div className="gearguard-image-side">
         <div className="triangle-clipper">
-            <img src={gearsignimg} alt="GearGuard Asset" className="side-asset" />
+          <img src={gearsignimg} alt="GearGuard Asset" className="side-asset" />
         </div>
       </div>
 
@@ -26,7 +47,9 @@ const Loginpage = () => {
         <div className="gearguard-card">
           <div className="gearguard-header">
             <h1 className="gearguard-title">GearGuard</h1>
-            <p className="gearguard-subtitle">Access your <b>Maintenance Dashboard</b></p>
+            <p className="gearguard-subtitle">
+              Access your <b>Maintenance Dashboard</b>
+            </p>
           </div>
 
           <form className="gearguard-form" onSubmit={handleSubmit}>
@@ -51,17 +74,30 @@ const Loginpage = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-                <span className="eye-btn" onClick={() => setShowPassword(!showPassword)}>
+                <span
+                  className="eye-btn"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
                   {showPassword ? "HIDE" : "SHOW"}
                 </span>
               </div>
               <p className="forgot-text">Forgot password?</p>
             </div>
 
-            <button type="submit" className="gearguard-btn">Login Now</button>
+            <button type="submit" className="gearguard-btn">
+              Login Now
+            </button>
           </form>
 
-          <p className="footer-link">Don't have an account? <span onClick={()=>navigate('/signuppage')}>Create Account</span></p>
+          <p className="footer-link">
+            Don’t have an account?{" "}
+            <span onClick={() => navigate("/signuppage")}>
+              Create Account
+            </span>
+          </p>
+          <p className="footer-link">
+            <span onClick={() => navigate("/")}>← Back to Home</span>
+          </p>
         </div>
       </div>
     </div>
