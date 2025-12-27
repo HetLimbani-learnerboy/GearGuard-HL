@@ -10,7 +10,10 @@ export default function MaintenancePage() {
 
   const [openModal, setOpenModal] = useState(false);
 
-  const [requests, setRequests] = useState({
+export default function MaintenancePage() {
+    const navigate = useNavigate();
+    const [openModal, setOpenModal] = useState(false);
+    const [requests, setRequests] = useState({
     new: [
       { id: "1", name: "Printer Issue", title: "Printer not working", equipment: "Printer 01", type: "corrective", status: "new" },
       { id: "2", name: "Oil Leak", title: "Oil leakage check", equipment: "CNC 02", type: "preventive", status: "new" }
