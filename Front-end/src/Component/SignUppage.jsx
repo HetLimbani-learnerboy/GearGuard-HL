@@ -172,6 +172,9 @@ const SignUppage = () => {
                         Already have an account?{" "}
                         <span onClick={() => navigate("/loginpage")}>Log In</span>
                     </p>
+                    <p className="footer-link">
+            <span onClick={() => navigate("/")}>← Back to Home</span>
+          </p>
                 </div>
             </div>
         </div>

@@ -154,7 +154,7 @@
 .footer-link {
     text-align: center;
     color: #64748b;
-    margin-top: 40px;
+    margin-top: 30px;
     font-size: 14px;
 }
 
@@ -162,7 +162,14 @@
     color: #2563eb;
     font-weight: 800;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
+
+.footer-link span:hover {
+    color: #1e40af;
+    text-decoration: underline;
+}
+
 
 @keyframes imageEntrance {
     0% {
