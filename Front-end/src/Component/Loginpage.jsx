@@ -81,7 +81,7 @@ const Loginpage = () => {
                   {showPassword ? "HIDE" : "SHOW"}
                 </span>
               </div>
-              <p className="forgot-text">Forgot password?</p>
+              <p className="forgot-text" onClick={() => navigate("/forgotpassword")}>Forgot password?</p>
             </div>
 
             <button type="submit" className="gearguard-btn">
