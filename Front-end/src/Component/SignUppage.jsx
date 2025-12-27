@@ -1,5 +1,6 @@
 import React  from "react";
 
+
 const SignUppage = () => {
     return (
         <div className="signuppage-container">
