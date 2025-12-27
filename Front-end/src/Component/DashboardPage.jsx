@@ -19,10 +19,9 @@ export default function DashboardPage() {
         >
           Maintenance
         </div>
-        <div className="sidebar-item">Equipment</div>
-        <div className="sidebar-item">Calendar</div>
-        <div className="sidebar-item">Teams</div>
-        <div className="sidebar-item">Reports</div>
+        <div className="sidebar-item" onClick={()=>{navigate('/equipmentpage')}}>Equipment</div>
+        <div className="sidebar-item" onClick={()=>{navigate('/workcenterpageall')}}>Work Centers</div>
+        <div className="sidebar-item" onClick={()=>{navigate('/teampageall')}}>Teams</div>
       </aside>
 
       {/* Main Area */}
