@@ -5,14 +5,15 @@ import "./CreateRequestModal.css";
 export default function CreateRequestModal({ open, onClose, onCreate }) {
     const navigate = useNavigate();
 
-    const [form, setForm] = useState({
+    // Initial state to allow for easy resetting
+    const initialState = {
         name: "",
         subject: "",
         maintenanceFor: "equipment",
-        selectedTarget: "", // Equipment or Work Center Name
+        selectedTarget: "", 
         address: "",
         category: "",
-        requestDate: "",
+        requestDate: new Date().toISOString().split('T')[0], // Default to today
         type: "corrective",
         team: "",
         technician: "",
@@ -22,13 +23,22 @@ export default function CreateRequestModal({ open, onClose, onCreate }) {
         company: "My Company",
         notes: "",
         instructions: ""
-    });
+    };
 
-    // Load external selections (Teams & Work Centers) from LocalStorage
+    const [form, setForm] = useState(initialState);
+
+    // 1. Reset form when modal opens to clear stale data
+    useEffect(() => {
+        if (open) {
+            setForm(prev => ({...initialState, maintenanceFor: prev.maintenanceFor}));
+        }
+    }, [open]);
+
+    // 2. Load external selections (Teams & Work Centers) from LocalStorage
     useEffect(() => {
         if (!open) return;
 
-        // 1. Load Team Data
+        // Load Team Data
         const storedTeam = localStorage.getItem("selectedTeam");
         if (storedTeam) {
             const team = JSON.parse(storedTeam);
@@ -39,7 +49,7 @@ export default function CreateRequestModal({ open, onClose, onCreate }) {
             }));
         }
 
-        // 2. Load Work Center Selection
+        // Load Work Center Selection
         const storedWC = localStorage.getItem("selectedWorkCenter");
         if (storedWC && form.maintenanceFor === "work_center") {
             const wc = JSON.parse(storedWC);
@@ -58,6 +68,17 @@ export default function CreateRequestModal({ open, onClose, onCreate }) {
         }
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Simple validation to ensure data integrity
+        if (!form.name || !form.subject || !form.selectedTarget) {
+            alert("Please fill in Requester Name, Subject, and Target.");
+            return;
+        }
+        onCreate(form); 
+        onClose();
+    };
+
     if (!open) return null;
 
     return (
@@ -66,7 +87,7 @@ export default function CreateRequestModal({ open, onClose, onCreate }) {
                 <h2 className="modal-header">Create Maintenance Request</h2>
 
                 <div className="form-grid">
-                    {/* LEFT SIDE: Identification & Type */}
+                    {/* LEFT SIDE */}
                     <div className="form-column">
                         <div className="form-row">
                             <label>Requester Name</label>
@@ -130,7 +151,6 @@ export default function CreateRequestModal({ open, onClose, onCreate }) {
                             <input
                                 className={`modal-input ${form.maintenanceFor === "work_center" ? "disabled-input" : ""}`}
                                 value={form.address}
-                                // Only readOnly if Work Center is selected (because WC auto-fills it)
                                 readOnly={form.maintenanceFor === "work_center"}
                                 onChange={(e) => setForm({ ...form, address: e.target.value })}
                                 placeholder={form.maintenanceFor === "work_center" ? "Auto-filled on selection" : "Enter equipment location"}
@@ -143,7 +163,7 @@ export default function CreateRequestModal({ open, onClose, onCreate }) {
                                 className="modal-input"
                                 value={form.category}
                                 onChange={(e) => setForm({ ...form, category: e.target.value })}
-                                placeholder="e.g. Mechanical, Electrical"
+                                placeholder="e.g. Mechanical"
                             />
                         </div>
 
@@ -158,7 +178,7 @@ export default function CreateRequestModal({ open, onClose, onCreate }) {
                         </div>
                     </div>
 
-                    {/* RIGHT SIDE: Logistics & Scheduling */}
+                    {/* RIGHT SIDE */}
                     <div className="form-column">
                         <div className="form-row">
                             <label>Assigned Team</label>
@@ -190,7 +210,7 @@ export default function CreateRequestModal({ open, onClose, onCreate }) {
                         </div>
 
                         <div className="form-row">
-                            <label>Estimated Duration (Hrs)</label>
+                            <label>Duration (Hrs)</label>
                             <input
                                 className="modal-input"
                                 type="number"
@@ -200,7 +220,7 @@ export default function CreateRequestModal({ open, onClose, onCreate }) {
                         </div>
 
                         <div className="form-row">
-                            <label>Priority (0=Low, 3=Critical)</label>
+                            <label>Priority (0-3)</label>
                             <input
                                 className="modal-input"
                                 type="number"
@@ -244,10 +264,9 @@ export default function CreateRequestModal({ open, onClose, onCreate }) {
                     </div>
                 </div>
 
-                {/* FULL WIDTH: Text Areas */}
                 <div className="full-width-section">
                     <div className="form-row">
-                        <label>Notes / Observations</label>
+                        <label>Notes</label>
                         <textarea
                             className="modal-input"
                             rows="2"
@@ -255,9 +274,8 @@ export default function CreateRequestModal({ open, onClose, onCreate }) {
                             onChange={(e) => setForm({ ...form, notes: e.target.value })}
                         />
                     </div>
-
                     <div className="form-row">
-                        <label>Detailed Instructions</label>
+                        <label>Instructions</label>
                         <textarea
                             className="modal-input"
                             rows="2"
@@ -269,15 +287,7 @@ export default function CreateRequestModal({ open, onClose, onCreate }) {
 
                 <div className="modal-actions">
                     <button className="cancel-btn" onClick={onClose}>Cancel</button>
-                    <button
-                        className="create-btn"
-                        onClick={() => {
-                            onCreate(form); // This calls the fetch in MaintenancePage
-                            onClose();
-                        }}
-                    >
-                        Submit Request
-                    </button>
+                    <button className="create-btn" onClick={handleSubmit}>Submit Request</button>
                 </div>
             </div>
         </div>
