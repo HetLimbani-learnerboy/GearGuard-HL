@@ -1,15 +1,14 @@
-import React from "react";
-import SignUppage from "./Component/SignUppage";
-import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import DashboardPage from "./Component/DashboardPage";
 
-const App = () => {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<SignUppage />} />
-            </Routes>
-        </Router>
-    );
-};
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<DashboardPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
 
 export default App;
