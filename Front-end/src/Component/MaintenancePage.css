@@ -1,0 +1,60 @@
+.kanban-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+/* Columns */
+.kanban-column {
+  background: #f1f5f9;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.kanban-column h4 {
+  margin-bottom: 10px;
+}
+
+/* Cards */
+.kanban-card {
+  background: white;
+  padding: 12px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0,0,0,.04);
+  margin-bottom: 10px;
+}
+
+.req-title {
+  font-weight: 600;
+}
+
+.req-meta {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  color: white;
+}
+
+.corrective {
+  background: #ef4444;
+}
+
+.preventive {
+  background: #14b8a6;
+}
+
+.scrap-card {
+  background: #fee2e2;
+}
+.sidebar-item {
+  cursor: pointer;
+}
+
