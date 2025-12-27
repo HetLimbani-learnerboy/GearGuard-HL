@@ -11,7 +11,7 @@ export default function DashboardPage() {
       <aside className="sidebar">
         <div className="sidebar-header">GearGuard</div>
 
-        <div className="sidebar-item active">
+        <div className="sidebar-item active" onClick={() => navigate("/dashboard")}>
           Dashboard
         </div>
 

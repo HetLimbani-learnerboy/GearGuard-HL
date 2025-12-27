@@ -66,7 +66,7 @@ export default function MaintenancePage() {
             <aside className="sidebar">
                 <div className="sidebar-header">GearGuard</div>
 
-                <div className="sidebar-item" onClick={() => navigate("/")}>
+                <div className="sidebar-item" onClick={() => navigate("/dashboard")}>
                     Dashboard
                 </div>
 
