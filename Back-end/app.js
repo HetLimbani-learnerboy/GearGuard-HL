@@ -8,7 +8,7 @@ const forgotRoutes = require("./routes/forgotroutes");
 const workCenterRoutes = require("./routes/workCenterRoutes");
 const teamRoutes = require("./routes/teamRoutes");
 const requestRoutes = require("./routes/requestRoutes.js");
-const maintenanceRequestSchemadis = require("./routes/maintenanceRoutesdis");
+// const maintenanceRequestSchemadis = require("./routes/maintenanceRoutesdis");
 
 const app = express();
 
@@ -27,7 +27,7 @@ app.use("/api", forgotRoutes);
 app.use("/api", workCenterRoutes);
 app.use("/api", teamRoutes);
 app.use("/api", requestRoutes);
-app.use("/api", maintenanceRequestSchemadis);
+// app.use("/api", maintenanceRequestSchemadis);
 // app.use("/api", maintenanceRoutes);
 
 
