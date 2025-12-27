@@ -1,32 +1,21 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import LandingPage from "./Component/LandingPage";
-import Loginpage from "./Component/Loginpage";
-import SignUppage from "./Component/SignUppage";
-import DashboardPage from "./Component/DashboardPage";
-import MaintenancePage from "./Component/MaintenancePage";
+import LandingPage from "./Component/LandingPage.jsx";
+import Signuppage from "./Component/Signuppage.jsx";
+import Loginpage from "./Component/Loginpage.jsx";
+ import DashboardPage from "./Component/DashboardPage.jsx";
+import MaintenancePage from "./Component/MaintenancePage.jsx";
 
-<Route path="/maintenance" element={<MaintenancePage />} />
-
-function App() {
+export default function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<DashboardPage />} />
-        <Route path="/maintenance" element={<MaintenancePage />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+     <Route path="/" element={<LandingPage />} />
+     <Route path='/signuppage' element={<Signuppage />} />
+        <Route path='/loginpage' element={<Loginpage />} />
+         <Route path='/dashboard' element={<DashboardPage />} /> 
+        <Route path='/maintenance' element={<MaintenancePage />} />
+
+    </Routes>
   );
 }
-const App = () => {
-    return (
-        <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/loginpage" element={<Loginpage />} />
-         <Route path="/signuppage" element={<SignUppage />} /> 
-            <Route path="/dashboard" element={<DashboardPage />} />  
-        </Routes>
-    );
-};
-
-export default App;
+    
