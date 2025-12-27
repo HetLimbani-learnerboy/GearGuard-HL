@@ -5,7 +5,6 @@
   font-family: "Inter", sans-serif;
 }
 
-/* Sidebar */
 .sidebar {
   width: 240px;
   background: #1f2937;
@@ -45,7 +44,6 @@
   padding: 18px;
 }
 
-/* Cards */
 .cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -71,7 +69,6 @@
   margin-top: 6px;
 }
 
-/* Placeholder */
 .placeholder-box {
   background: white;
   height: 220px;
