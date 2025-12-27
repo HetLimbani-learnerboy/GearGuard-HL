@@ -1,58 +1,61 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import "./DashboardPage.css";
-import { useNavigate } from "react-router-dom";
 
 export default function DashboardPage() {
   const navigate = useNavigate();
 
   return (
     <div className="dashboard-wrapper">
+      {/* Sidebar */}
       <aside className="sidebar">
         <div className="sidebar-header">GearGuard</div>
 
-        <div className="sidebar-item active">
-          Dashboard
-        </div>
-
-        {/* ⛔ Disabled until route exists */}
-        <div className="sidebar-item disabled" onClick={() => navigate("/maintenance")}>
+        <div className="sidebar-item active">Dashboard</div>
+        <div
+          className="sidebar-item"
+          onClick={() => navigate("/maintenance")}
+        >
           Maintenance
         </div>
-
         <div className="sidebar-item">Equipment</div>
         <div className="sidebar-item">Calendar</div>
         <div className="sidebar-item">Teams</div>
         <div className="sidebar-item">Reports</div>
       </aside>
 
+      {/* Main Area */}
       <div className="main-area">
+        {/* ✅ SAME NAVBAR */}
         <Navbar title="Dashboard" />
 
         <main className="content">
+          {/* Stats Cards */}
           <div className="cards">
-            <div className="card">
-              <h3>Open Requests</h3>
-              <div className="card-value">12</div>
+            <div className="stat-card">
+              <p className="stat-title">Open Requests</p>
+              <h3 className="stat-value">12</h3>
             </div>
 
-            <div className="card">
-              <h3>In Progress</h3>
-              <div className="card-value">5</div>
+            <div className="stat-card">
+              <p className="stat-title">In Progress</p>
+              <h3 className="stat-value">5</h3>
             </div>
 
-            <div className="card">
-              <h3>Preventive Scheduled</h3>
-              <div className="card-value">9</div>
+            <div className="stat-card">
+              <p className="stat-title">Preventive Scheduled</p>
+              <h3 className="stat-value">9</h3>
             </div>
 
-            <div className="card">
-              <h3>Scrapped Equipment</h3>
-              <div className="card-value">2</div>
+            <div className="stat-card">
+              <p className="stat-title">Scrapped Equipment</p>
+              <h3 className="stat-value">2</h3>
             </div>
           </div>
 
-          <div className="placeholder-box">
+          {/* Chart Placeholder */}
+          <div className="chart-placeholder">
             Requests by Team (Chart Coming Soon)
           </div>
         </main>

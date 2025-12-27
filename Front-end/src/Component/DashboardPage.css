@@ -2,38 +2,46 @@
   display: flex;
   min-height: 100vh;
   background: #f8fafc;
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
 }
 
+/* Sidebar */
 .sidebar {
-  width: 240px;
-  background: #1f2937;
-  color: #d1d5db;
+  width: 250px;
+  background: #0f172a;
+  color: #cbd5e1;
   display: flex;
   flex-direction: column;
 }
 
 .sidebar-header {
-  padding: 16px;
-  font-size: 18px;
-  font-weight: 600;
-  border-bottom: 1px solid #374151;
+  padding: 20px;
+  font-size: 22px;
+  font-weight: 900;
+  color: #2563eb;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .sidebar-item {
-  padding: 10px 16px;
+  margin: 6px 12px;
+  padding: 12px 16px;
+  border-radius: 10px;
   cursor: pointer;
-  border-radius: 8px;
-  margin: 4px 8px;
+  font-weight: 600;
+  transition: 0.3s;
 }
 
-.sidebar-item:hover,
-.sidebar-item.active {
-  background: #374151;
+.sidebar-item:hover {
+  background: rgba(37, 99, 235, 0.15);
   color: white;
 }
 
-/* Main content area */
+.sidebar-item.active {
+  background: #2563eb;
+  color: white;
+}
+
+/* Main */
 .main-area {
   flex: 1;
   display: flex;
@@ -41,43 +49,53 @@
 }
 
 .content {
-  padding: 18px;
+  padding: 32px;
 }
 
+/* Cards */
 .cards {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
-  margin-bottom: 18px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
 }
 
-.card {
+.stat-card {
   background: white;
-  padding: 16px;
-  border-radius: 14px;
-  box-shadow: 0 6px 12px rgba(30,10,58,0.04);
+  border-radius: 20px;
+  padding: 28px;
+  border: 1px solid #e2e8f0;
+  transition: 0.4s;
 }
 
-.card h3 {
-  color: #6b7280;
+.stat-card:hover {
+  transform: translateY(-6px);
+  border-color: #2563eb;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+}
+
+.stat-title {
   font-size: 14px;
-}
-
-.card-value {
-  font-size: 28px;
   font-weight: 700;
-  margin-top: 6px;
+  color: #64748b;
+  margin-bottom: 10px;
 }
 
-.placeholder-box {
-  background: white;
-  height: 220px;
-  border-radius: 14px;
-  box-shadow: 0 6px 12px rgba(30,10,58,0.04);
-  display: grid;
-  place-items: center;
-  color: gray;
+.stat-value {
+  font-size: 36px;
+  font-weight: 900;
+  color: #0f172a;
 }
-.sidebar-item {
-  cursor: pointer;
+
+/* Chart */
+.chart-placeholder {
+  background: white;
+  height: 260px;
+  border-radius: 20px;
+  border: 1px dashed #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-weight: 600;
 }

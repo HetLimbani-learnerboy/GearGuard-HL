@@ -1,0 +1,129 @@
+.workcenter-page {
+  padding: 80px 8%;
+  background: #ffffff;
+  font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+  min-height: 100vh;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.page-title {
+  font-size: 36px;
+  font-weight: 900;
+  color: #0f172a;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+/* CONTROLS */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 50px;
+}
+
+.search-input {
+  width: 300px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(37,99,235,0.1);
+}
+
+.select-box {
+  width: 320px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 2px solid #e2e8f0;
+  background: #f8fafc;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.select-box:focus {
+  outline: none;
+  border-color: #2563eb;
+  background: #ffffff;
+}
+
+/* DETAILS CARD */
+.details-card {
+  max-width: 520px;
+  margin: auto;
+  padding: 40px;
+  background: #f8fafc;
+  border-radius: 20px;
+  border: 1px solid #e2e8f0;
+  animation: slideInUp 0.6s ease-out;
+  transition: 0.4s;
+}
+
+.details-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+  border-color: #2563eb;
+}
+
+.details-card h3 {
+  font-size: 22px;
+  font-weight: 900;
+  color: #2563eb;
+  margin-bottom: 20px;
+}
+
+.details-card p {
+  font-size: 15px;
+  color: #475569;
+  margin: 8px 0;
+  font-weight: 600;
+}
+
+/* ANIMATIONS */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 28px;
+  }
+
+  .search-input,
+  .select-box {
+    width: 100%;
+  }
+
+  .details-card {
+    padding: 30px 20px;
+  }
+}
