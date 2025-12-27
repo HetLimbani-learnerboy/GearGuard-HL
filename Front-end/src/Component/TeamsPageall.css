@@ -1,20 +1,33 @@
 /* ===============================
-   PAGE LAYOUT
+   PAGE BASE
 ================================ */
 
 .teams-page {
-  padding: 40px 8%;
-  background: #ffffff;
   min-height: 100vh;
-  font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
-  animation: fadeInUp 0.6s ease-out;
+  background: linear-gradient(180deg, #f8faff 0%, #ffffff 70%);
+  padding: 80px 10%;
+  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
 }
 
-.page-title {
-  font-size: 32px;
+/* ===============================
+   HEADER
+================================ */
+
+.teams-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.teams-header h1 {
+  font-size: 40px;
   font-weight: 900;
-  margin-bottom: 25px;
   color: #0f172a;
+}
+
+.teams-header p {
+  margin-top: 10px;
+  font-size: 16px;
+  color: #64748b;
 }
 
 /* ===============================
@@ -22,13 +35,14 @@
 ================================ */
 
 .search-input {
-  width: 360px;
-  padding: 12px 16px;
-  border-radius: 10px;
+  margin-top: 28px;
+  width: 420px;
+  max-width: 100%;
+  padding: 14px 18px;
+  border-radius: 12px;
   border: 2px solid #e2e8f0;
   font-size: 15px;
   outline: none;
-  margin-bottom: 25px;
   transition: 0.3s;
 }
 
@@ -38,92 +52,94 @@
 }
 
 /* ===============================
+   CARD
+================================ */
+
+.teams-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 28px;
+  box-shadow: 0 30px 60px rgba(37, 99, 235, 0.12);
+  animation: fadeUp 0.6s ease-out;
+}
+
+/* ===============================
    TABLE
 ================================ */
 
-.table-container {
+.teams-table {
   width: 100%;
-  overflow-x: auto;
-  border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-}
-
-.data-table {
-  width: 100%;
-  min-width: 900px;
   border-collapse: collapse;
-  background: #ffffff;
 }
 
-.data-table thead {
-  background: #f8fafc;
+.teams-table thead {
+  background: linear-gradient(90deg, #2563eb, #1e40af);
 }
 
-.data-table th {
-  padding: 14px;
+.teams-table th {
+  padding: 16px;
   font-size: 14px;
   font-weight: 800;
-  color: #475569;
+  color: white;
   text-align: left;
-  border-bottom: 2px solid #cbd5e1;
 }
 
-.data-table td {
-  padding: 14px;
+.teams-table td {
+  padding: 16px;
   font-size: 14px;
   color: #0f172a;
   border-bottom: 1px solid #e2e8f0;
 }
 
-.data-table tbody tr {
-  transition: background 0.3s;
+/* Hover */
+.teams-table tbody tr {
+  transition: background 0.3s, transform 0.2s;
 }
 
-.data-table tbody tr:hover {
-  background: #f1f5f9;
+.teams-table tbody tr:hover {
+  background: #f1f5ff;
 }
 
-/* ===============================
-   EMPTY STATE
-================================ */
+/* Team Name Highlight */
+.team-name {
+  font-weight: 700;
+  color: #2563eb;
+}
 
-.empty-text {
+/* Members */
+.members {
+  color: #475569;
+}
+
+/* Badge */
+.count-badge {
+  display: inline-block;
+  min-width: 28px;
+  padding: 6px 10px;
   text-align: center;
-  padding: 30px;
-  color: #64748b;
-}
-
-/* ===============================
-   BACK BUTTON
-================================ */
-
-.back-btn {
-  margin-top: 30px;
-  padding: 12px 26px;
   background: #2563eb;
   color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 14px;
+  border-radius: 999px;
   font-weight: 800;
-  cursor: pointer;
-  transition: 0.3s;
+  font-size: 12px;
 }
 
-.back-btn:hover {
-  background: #1e40af;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+/* Empty */
+.empty-text {
+  padding: 40px;
+  text-align: center;
+  color: #64748b;
+  font-weight: 600;
 }
 
 /* ===============================
    ANIMATION
 ================================ */
 
-@keyframes fadeInUp {
+@keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(24px);
   }
   to {
     opacity: 1;
@@ -137,14 +153,14 @@
 
 @media (max-width: 768px) {
   .teams-page {
-    padding: 25px;
+    padding: 50px 6%;
   }
 
-  .page-title {
-    font-size: 24px;
+  .teams-header h1 {
+    font-size: 30px;
   }
 
-  .search-input {
-    width: 100%;
+  .teams-table {
+    font-size: 13px;
   }
 }

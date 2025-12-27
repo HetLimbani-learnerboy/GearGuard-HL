@@ -7,22 +7,21 @@ import "./MaintenancePage.css";
 
 export default function MaintenancePage() {
   const navigate = useNavigate();
-
   const [openModal, setOpenModal] = useState(false);
 
   const [requests, setRequests] = useState({
     new: [
-      { id: "1", name: "Printer Issue", title: "Printer not working", equipment: "Printer 01", type: "corrective", status: "new" },
-      { id: "2", name: "Oil Leak", title: "Oil leakage check", equipment: "CNC 02", type: "preventive", status: "new" }
+      { id: "1", name: "Printer Issue", title: "Printer not working", equipment: "Printer 01", status: "new" },
+      { id: "2", name: "Oil Leak", title: "Oil leakage check", equipment: "CNC 02", status: "new" }
     ],
     in_progress: [
-      { id: "3", name: "Internet Fix", title: "Network Issue", equipment: "Router", type: "corrective", status: "in_progress" }
+      { id: "3", name: "Internet Fix", title: "Network Issue", equipment: "Router", status: "in_progress" }
     ],
     repaired: [
-      { id: "4", name: "AC Service", title: "AC serviced", equipment: "Lab AC", type: "preventive", status: "repaired" }
+      { id: "4", name: "AC Service", title: "AC serviced", equipment: "Lab AC", status: "repaired" }
     ],
     scrap: [
-      { id: "5", name: "Old Monitor", title: "Disposed", equipment: "Monitor", type: "scrap", status: "scrap" }
+      { id: "5", name: "Old Monitor", title: "Disposed", equipment: "Monitor", status: "scrap" }
     ]
   });
 
@@ -32,7 +31,6 @@ export default function MaintenancePage() {
       name: data.name,
       title: data.subject,
       equipment: data.equipment,
-      type: data.type,
       status: "new"
     };
 
@@ -53,7 +51,6 @@ export default function MaintenancePage() {
 
     const [movedItem] = sourceItems.splice(result.source.index, 1);
     movedItem.status = destCol;
-
     destItems.splice(result.destination.index, 0, movedItem);
 
     setRequests({
@@ -72,10 +69,15 @@ export default function MaintenancePage() {
 
   return (
     <div className="maintenance-wrapper">
-      
+
       {/* HEADER */}
       <div className="top-bar">
-        <h2 style={{ margin: 0 }}>Maintenance Requests</h2>
+        <div>
+          <h2>Maintenance Requests</h2>
+          <p className="subtitle">
+            Manage equipment issues across their lifecycle
+          </p>
+        </div>
 
         <button
           onClick={() => setOpenModal(true)}
@@ -97,7 +99,7 @@ export default function MaintenancePage() {
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  <h4>{col.label}</h4>
+                  <h4 className="column-title">{col.label}</h4>
 
                   {requests[col.key].map((req, index) => (
                     <Draggable key={req.id} draggableId={req.id} index={index}>
@@ -108,12 +110,9 @@ export default function MaintenancePage() {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           onClick={() => {
-                            if (snapshot.isDragging) return;
-                            navigate(`/maintenance/${req.id}`);
-                          }}
-                          style={{
-                            cursor: "pointer",
-                            ...provided.draggableProps.style
+                            if (!snapshot.isDragging) {
+                              navigate(`/maintenance/${req.id}`);
+                            }
                           }}
                         >
                           <p className="req-title">{req.name}</p>
@@ -137,20 +136,19 @@ export default function MaintenancePage() {
         </div>
       </DragDropContext>
 
-      {/* CREATE MODAL */}
+      {/* MODAL */}
       <CreateRequestModal
         open={openModal}
         onClose={() => setOpenModal(false)}
         onCreate={handleCreateRequest}
       />
 
-      {/* BOTTOM BACK BUTTON */}
+      {/* FOOTER */}
       <div className="back-footer">
         <button className="back-btn" onClick={() => navigate("/")}>
           ← Back to Dashboard
         </button>
       </div>
-
     </div>
   );
 }
