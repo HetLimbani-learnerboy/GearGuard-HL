@@ -1,0 +1,169 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+}
+
+.landing {
+  background: #f9fafb;
+  color: #1f2937;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 8%;
+  background: #0b1220;
+}
+
+.logo {
+  color: #22c55e;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.nav-links a {
+  color: #cbd5e1;
+  margin-right: 24px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.nav-links a:hover {
+  color: white;
+}
+
+.nav-btn {
+  background: transparent;
+  border: 1px solid #3b82f6;
+  padding: 8px 18px;
+  color: #3b82f6;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Hero */
+.hero {
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  padding: 0 8%;
+  color: white;
+}
+
+.hero-content {
+  max-width: 620px;
+}
+
+.hero h2 {
+  font-size: 48px;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.hero p {
+  font-size: 17px;
+  margin-bottom: 32px;
+  color: #cbd5f5;
+  line-height: 1.6;
+}
+
+/* Primary CTA */
+.primary-btn {
+  background: #22c55e;
+  border: none;
+  padding: 14px 36px;
+  color: #052e16;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.primary-btn:hover {
+  background: #16a34a;
+}
+
+/* Features */
+.features {
+  padding: 90px 8%;
+  text-align: center;
+  background: #f9fafb;
+}
+
+.features h3 {
+  font-size: 32px;
+  margin-bottom: 50px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 28px;
+}
+
+.feature-card {
+  background: white;
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+}
+
+.feature-card h4 {
+  margin-bottom: 12px;
+  font-size: 18px;
+}
+
+/* Workflow */
+.workflow {
+  padding: 80px 8%;
+  background: #eef2ff;
+  text-align: center;
+}
+
+.workflow h3 {
+  font-size: 30px;
+  margin-bottom: 35px;
+}
+
+.workflow-steps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+}
+
+.step {
+  background: white;
+  padding: 14px 22px;
+  border-radius: 999px;
+  font-weight: 500;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+/* Footer */
+.footer {
+  padding: 22px;
+  text-align: center;
+  background: #020617;
+  color: #94a3b8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero {
+    padding: 0 6%;
+    text-align: center;
+  }
+
+  .hero h2 {
+    font-size: 34px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+}
