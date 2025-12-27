@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import signupImg from "../assets/signup_image.png"; // replace image if needed
+import React  from "react";
 
 const SignUppage = () => {
     const [form, setForm] = useState({
