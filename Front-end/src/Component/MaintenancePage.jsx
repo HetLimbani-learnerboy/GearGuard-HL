@@ -1,254 +1,157 @@
-import React from "react";
-import Navbar from "./Navbar";
-import "./MaintenancePage.css";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import CreateRequestModal from "./CreateRequestModal";
+import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { useNavigate } from "react-router-dom";
 
+import CreateRequestModal from "./CreateRequestModal";
+import "./MaintenancePage.css";
 
 export default function MaintenancePage() {
-    const navigate = useNavigate();
-    const [openModal, setOpenModal] = useState(false);
-    const [requests, setRequests] = useState({
-        new: [
-            { id: "1", title: "Printer not working", equipment: "Printer 01", type: "corrective" },
-            { id: "2", title: "Oil leakage check", equipment: "CNC 02", type: "preventive" }
-        ],
-        in_progress: [
-            { id: "3", title: "Network Issue", equipment: "Router", type: "corrective" }
-        ],
-        repaired: [
-            { id: "4", title: "AC Service", equipment: "Lab AC", type: "preventive" }
-        ],
-        scrap: [
-            { id: "5", title: "Old Monitor", equipment: "", type: "scrap" }
-        ]
-    });
-    const handleDragEnd = (result) => {
-  if (!result.destination) return;
+  const navigate = useNavigate();
 
-  const sourceCol = result.source.droppableId;
-  const destCol = result.destination.droppableId;
+  const [openModal, setOpenModal] = useState(false);
 
-  // same column drag
-  if (sourceCol === destCol) return;
-
-  const sourceItems = Array.from(requests[sourceCol]);
-  const destItems = Array.from(requests[destCol]);
-
-  const [movedItem] = sourceItems.splice(result.source.index, 1);
-
-  // 🔥 update status
-  movedItem.status = destCol;
-
-  destItems.splice(result.destination.index, 0, movedItem);
-
-  setRequests({
-    ...requests,
-    [sourceCol]: sourceItems,
-    [destCol]: destItems
+  const [requests, setRequests] = useState({
+    new: [
+      { id: "1", name: "Printer Issue", title: "Printer not working", equipment: "Printer 01", type: "corrective", status: "new" },
+      { id: "2", name: "Oil Leak", title: "Oil leakage check", equipment: "CNC 02", type: "preventive", status: "new" }
+    ],
+    in_progress: [
+      { id: "3", name: "Internet Fix", title: "Network Issue", equipment: "Router", type: "corrective", status: "in_progress" }
+    ],
+    repaired: [
+      { id: "4", name: "AC Service", title: "AC serviced", equipment: "Lab AC", type: "preventive", status: "repaired" }
+    ],
+    scrap: [
+      { id: "5", name: "Old Monitor", title: "Disposed", equipment: "Monitor", type: "scrap", status: "scrap" }
+    ]
   });
-};
 
-   
-    const handleCreateRequest = (data) => {
-  const newCard = {
-  id: Date.now().toString(),
-  title: data.subject,
-  equipment: data.equipment,
-  type: data.type,
-  status: "new"
-};
+  // CREATE NEW REQUEST
+  const handleCreateRequest = (data) => {
+    const newCard = {
+      id: Date.now().toString(),
+      name: data.name,
+      title: data.subject,
+      equipment: data.equipment,
+      type: data.type,
+      status: "new"
+    };
 
-  setRequests((prev) => ({
-    ...prev,
-    new: [...prev.new, newCard]
-  }));
-};
+    setRequests(prev => ({
+      ...prev,
+      new: [...prev.new, newCard]
+    }));
+  };
 
-    return (
-        <div className="dashboard-wrapper">
+  // DRAG DROP
+  const handleDragEnd = (result) => {
+    if (!result.destination) return;
 
-            {/* Sidebar */}
-            <aside className="sidebar">
-                <div className="sidebar-header">GearGuard</div>
+    const sourceCol = result.source.droppableId;
+    const destCol = result.destination.droppableId;
 
-                <div className="sidebar-item" onClick={() => navigate("/")}>
-                    Dashboard
-                </div>
+    const sourceItems = Array.from(requests[sourceCol]);
+    const destItems = Array.from(requests[destCol]);
 
-                <div className="sidebar-item active" onClick={() => navigate("/maintenance")}>
-                    Maintenance
-                </div>
+    const [movedItem] = sourceItems.splice(result.source.index, 1);
+    movedItem.status = destCol;
 
-                <div className="sidebar-item">Equipment</div>
-                <div className="sidebar-item">Calendar</div>
-                <div className="sidebar-item">Teams</div>
-                <div className="sidebar-item">Reports</div>
-            </aside>
+    destItems.splice(result.destination.index, 0, movedItem);
 
+    setRequests({
+      ...requests,
+      [sourceCol]: sourceItems,
+      [destCol]: destItems
+    });
+  };
 
-            {/* Main */}
-            <div className="main-area">
-                <Navbar title="Maintenance Requests" />
+  const columns = [
+    { key: "new", label: "New" },
+    { key: "in_progress", label: "In Progress" },
+    { key: "repaired", label: "Repaired" },
+    { key: "scrap", label: "Scrap" }
+  ];
 
-                <main className="content">
-                    {/* Create Button */}
-                    <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 10 }}>
-                        <button
-                            onClick={() => setOpenModal(true)}
-                            style={{
-                                background: "#4f46e5",
-                                color: "white",
-                                padding: "8px 14px",
-                                borderRadius: "10px",
-                                border: "none",
-                                cursor: "pointer"
-                            }}
+  return (
+    <div className="maintenance-wrapper">
+
+      {/* HEADER */}
+      <div className="top-bar">
+        <h2 style={{ margin: 0 }}>Maintenance Requests</h2>
+
+        <button
+          onClick={() => setOpenModal(true)}
+          className="primary-btn"
+        >
+          + Create Request
+        </button>
+      </div>
+
+      {/* KANBAN */}
+      <DragDropContext onDragEnd={handleDragEnd}>
+        <div className="kanban-container">
+
+          {columns.map(col => (
+            <Droppable key={col.key} droppableId={col.key}>
+              {(provided) => (
+                <div
+                  className="kanban-column"
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                >
+                  <h4>{col.label}</h4>
+
+                  {requests[col.key].map((req, index) => (
+                    <Draggable key={req.id} draggableId={req.id} index={index}>
+                      {(provided, snapshot) => (
+                        <div
+                          className="kanban-card"
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          onClick={() => {
+                            if (snapshot.isDragging) return;
+                            navigate(`/maintenance/${req.id}`);
+                          }}
+                          style={{
+                            cursor: "pointer",
+                            ...provided.draggableProps.style
+                          }}
                         >
-                            + Create Request
-                        </button>
-                    </div>
+                          <p className="req-title">{req.name}</p>
+                          <p className="req-meta">{req.title}</p>
+                          <p className="req-meta">Equipment: {req.equipment}</p>
 
-                    <DragDropContext onDragEnd={handleDragEnd}>
-                        <div className="kanban-container">
-
-                            {/* NEW */}
-                            <Droppable droppableId="new">
-                                {(provided) => (
-                                    <div
-                                        className="kanban-column"
-                                        ref={provided.innerRef}
-                                        {...provided.droppableProps}
-                                    >
-                                        <h4>New</h4>
-
-                                        {requests.new.map((req, index) => (
-                                            <Draggable key={req.id} draggableId={req.id} index={index}>
-                                                {(provided) => (
-                                                    <div
-  className="kanban-card"
-  onClick={() => navigate(`/maintenance/${req.id}`)}
-  style={{ cursor: "pointer" }}
->
-
-                                                        <p className="req-title">{req.title}</p>
-                                                        <p className="req-meta">Equipment: {req.equipment}</p>
-                                                    </div>
-                                                )}
-                                            </Draggable>
-                                        ))}
-
-                                        {provided.placeholder}
-                                    </div>
-                                )}
-                            </Droppable>
-
-                            {/* IN PROGRESS */}
-                            <Droppable droppableId="in_progress">
-                                {(provided) => (
-                                    <div
-                                        className="kanban-column"
-                                        ref={provided.innerRef}
-                                        {...provided.droppableProps}
-                                    >
-                                        <h4>In Progress</h4>
-
-                                        {requests.in_progress.map((req, index) => (
-                                            <Draggable key={req.id} draggableId={req.id} index={index}>
-                                                {(provided) => (
-                                                   <div
-  className="kanban-card"
-  onClick={() => navigate(`/maintenance/${req.id}`)}
-  style={{ cursor: "pointer" }}
->
-
-                                                        <p className="req-title">{req.title}</p>
-                                                        <p className="req-meta">Equipment: {req.equipment}</p>
-                                                    </div>
-                                                )}
-                                            </Draggable>
-                                        ))}
-
-                                        {provided.placeholder}
-                                    </div>
-                                )}
-                            </Droppable>
-
-                            {/* REPAIRED */}
-                            <Droppable droppableId="repaired">
-                                {(provided) => (
-                                    <div
-                                        className="kanban-column"
-                                        ref={provided.innerRef}
-                                        {...provided.droppableProps}
-                                    >
-                                        <h4>Repaired</h4>
-
-                                        {requests.repaired.map((req, index) => (
-                                            <Draggable key={req.id} draggableId={req.id} index={index}>
-                                                {(provided) => (
-                                                    <div
-  className="kanban-card"
-  onClick={() => navigate(`/maintenance/${req.id}`)}
-  style={{ cursor: "pointer" }}
->
-
-                                                        <p className="req-title">{req.title}</p>
-                                                        <p className="req-meta">Equipment: {req.equipment}</p>
-                                                    </div>
-                                                )}
-                                            </Draggable>
-                                        ))}
-
-                                        {provided.placeholder}
-                                    </div>
-                                )}
-                            </Droppable>
-
-                            {/* SCRAP */}
-                            <Droppable droppableId="scrap">
-                                {(provided) => (
-                                    <div
-                                        className="kanban-column"
-                                        ref={provided.innerRef}
-                                        {...provided.droppableProps}
-                                    >
-                                        <h4>Scrap</h4>
-
-                                        {requests.scrap.map((req, index) => (
-                                            <Draggable key={req.id} draggableId={req.id} index={index}>
-                                                {(provided) => (
-                                                   <div
-  className="kanban-card"
-  onClick={() => navigate(`/maintenance/${req.id}`)}
-  style={{ cursor: "pointer" }}
->
-
-                                                        <p className="req-title">{req.title}</p>
-                                                        <p className="req-meta">{req.equipment}</p>
-                                                    </div>
-                                                )}
-                                            </Draggable>
-                                        ))}
-
-                                        {provided.placeholder}
-                                    </div>
-                                )}
-                            </Droppable>
-
+                          <span className={`status-badge ${req.status}`}>
+                            {req.status.replace("_", " ")}
+                          </span>
                         </div>
-                    </DragDropContext>
+                      )}
+                    </Draggable>
+                  ))}
 
-                    <CreateRequestModal
-  open={openModal}
-  onClose={() => setOpenModal(false)}
-  onCreate={handleCreateRequest}
-/>
+                  {provided.placeholder}
+                </div>
+              )}
+            </Droppable>
+          ))}
 
-                </main>
-            </div>
         </div>
-    );
+      </DragDropContext>
+
+      {/* CREATE MODAL */}
+      <CreateRequestModal
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        onCreate={handleCreateRequest}
+      />
+
+      {/* BOTTOM BACK BUTTON */}
+      <div className="back-footer">
+        <button className="back-btn" onClick={() => navigate("/")}>
+          ← Back to Dashboard
+        </button>
+      </div>
+    </div>
+  );
 }
