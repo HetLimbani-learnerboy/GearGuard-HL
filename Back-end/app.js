@@ -11,7 +11,7 @@ connectDB();
 
 app.use(cors());
 app.use(express.json());
-
+app.use("/api/requests", require("./routes/requests"));
 app.get("/", (req, res) => {
     res.send("GearGuard Backend Running");
 });

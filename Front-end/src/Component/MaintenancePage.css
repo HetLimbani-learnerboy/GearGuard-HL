@@ -58,3 +58,16 @@
   cursor: pointer;
 }
 
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  color: white;
+  margin-top: 6px;
+}
+
+.new { background: #6b7280; }          /* gray */
+.in_progress { background: #facc15; }  /* yellow */
+.repaired { background: #22c55e; }     /* green */
+.scrap { background: #ef4444; }        /* red */

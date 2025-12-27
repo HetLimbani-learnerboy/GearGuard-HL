@@ -5,6 +5,8 @@ import Signuppage from "./Component/Signuppage.jsx";
 import Loginpage from "./Component/Loginpage.jsx";
  import DashboardPage from "./Component/DashboardPage.jsx";
 import MaintenancePage from "./Component/MaintenancePage.jsx";
+import MaintenanceDetailPage from "./Component/MaintenanceDetailPage";
+
 
 export default function App() {
   return (
@@ -14,6 +16,7 @@ export default function App() {
         <Route path='/loginpage' element={<Loginpage />} />
          <Route path='/dashboard' element={<DashboardPage />} /> 
         <Route path='/maintenance' element={<MaintenancePage />} />
+        <Route path="/maintenance/:id" element={<MaintenanceDetailPage />} />
 
     </Routes>
   );

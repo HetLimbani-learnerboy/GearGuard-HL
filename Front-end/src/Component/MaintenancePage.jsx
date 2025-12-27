@@ -26,23 +26,31 @@ export default function MaintenancePage() {
         ]
     });
     const handleDragEnd = (result) => {
-        if (!result.destination) return;
+  if (!result.destination) return;
 
-        const sourceCol = result.source.droppableId;
-        const destCol = result.destination.droppableId;
+  const sourceCol = result.source.droppableId;
+  const destCol = result.destination.droppableId;
 
-        const sourceItems = Array.from(requests[sourceCol]);
-        const destItems = Array.from(requests[destCol]);
+  // same column drag
+  if (sourceCol === destCol) return;
 
-        const [movedItem] = sourceItems.splice(result.source.index, 1);
-        destItems.splice(result.destination.index, 0, movedItem);
+  const sourceItems = Array.from(requests[sourceCol]);
+  const destItems = Array.from(requests[destCol]);
 
-        setRequests({
-            ...requests,
-            [sourceCol]: sourceItems,
-            [destCol]: destItems
-        });
-    };
+  const [movedItem] = sourceItems.splice(result.source.index, 1);
+
+  // 🔥 update status
+  movedItem.status = destCol;
+
+  destItems.splice(result.destination.index, 0, movedItem);
+
+  setRequests({
+    ...requests,
+    [sourceCol]: sourceItems,
+    [destCol]: destItems
+  });
+};
+
    
     const handleCreateRequest = (data) => {
   const newCard = {
@@ -120,11 +128,11 @@ export default function MaintenancePage() {
                                             <Draggable key={req.id} draggableId={req.id} index={index}>
                                                 {(provided) => (
                                                     <div
-                                                        className="kanban-card"
-                                                        ref={provided.innerRef}
-                                                        {...provided.draggableProps}
-                                                        {...provided.dragHandleProps}
-                                                    >
+  className="kanban-card"
+  onClick={() => navigate(`/maintenance/${req.id}`)}
+  style={{ cursor: "pointer" }}
+>
+
                                                         <p className="req-title">{req.title}</p>
                                                         <p className="req-meta">Equipment: {req.equipment}</p>
                                                     </div>
@@ -150,12 +158,12 @@ export default function MaintenancePage() {
                                         {requests.in_progress.map((req, index) => (
                                             <Draggable key={req.id} draggableId={req.id} index={index}>
                                                 {(provided) => (
-                                                    <div
-                                                        className="kanban-card"
-                                                        ref={provided.innerRef}
-                                                        {...provided.draggableProps}
-                                                        {...provided.dragHandleProps}
-                                                    >
+                                                   <div
+  className="kanban-card"
+  onClick={() => navigate(`/maintenance/${req.id}`)}
+  style={{ cursor: "pointer" }}
+>
+
                                                         <p className="req-title">{req.title}</p>
                                                         <p className="req-meta">Equipment: {req.equipment}</p>
                                                     </div>
@@ -182,11 +190,11 @@ export default function MaintenancePage() {
                                             <Draggable key={req.id} draggableId={req.id} index={index}>
                                                 {(provided) => (
                                                     <div
-                                                        className="kanban-card"
-                                                        ref={provided.innerRef}
-                                                        {...provided.draggableProps}
-                                                        {...provided.dragHandleProps}
-                                                    >
+  className="kanban-card"
+  onClick={() => navigate(`/maintenance/${req.id}`)}
+  style={{ cursor: "pointer" }}
+>
+
                                                         <p className="req-title">{req.title}</p>
                                                         <p className="req-meta">Equipment: {req.equipment}</p>
                                                     </div>
@@ -212,12 +220,12 @@ export default function MaintenancePage() {
                                         {requests.scrap.map((req, index) => (
                                             <Draggable key={req.id} draggableId={req.id} index={index}>
                                                 {(provided) => (
-                                                    <div
-                                                        className="kanban-card scrap-card"
-                                                        ref={provided.innerRef}
-                                                        {...provided.draggableProps}
-                                                        {...provided.dragHandleProps}
-                                                    >
+                                                   <div
+  className="kanban-card"
+  onClick={() => navigate(`/maintenance/${req.id}`)}
+  style={{ cursor: "pointer" }}
+>
+
                                                         <p className="req-title">{req.title}</p>
                                                         <p className="req-meta">{req.equipment}</p>
                                                     </div>
