@@ -1,12 +1,14 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import LandingPage from "./Component/LandingPage.jsx";
+import LandingPage from "./Component/landingPage.jsx";
 import Signuppage from "./Component/Signuppage.jsx";
 import Loginpage from "./Component/Loginpage.jsx";
  import DashboardPage from "./Component/DashboardPage.jsx";
 import MaintenancePage from "./Component/MaintenancePage.jsx";
 import MaintenanceDetailPage from "./Component/MaintenanceDetailPage";
 
+import ForgotPassword from "./Component/ForgotPassword.jsx";
+import WorkCenterPage from "./Component/WorkCenterPage.jsx";
 
 export default function App() {
   return (
@@ -18,6 +20,8 @@ export default function App() {
         <Route path='/maintenance' element={<MaintenancePage />} />
         <Route path="/maintenance/:id" element={<MaintenanceDetailPage />} />
 
+        <Route path='/forgotpassword' element={<ForgotPassword />} />
+        <Route path='/workcenter' element={<WorkCenterPage />} />
     </Routes>
   );
 }

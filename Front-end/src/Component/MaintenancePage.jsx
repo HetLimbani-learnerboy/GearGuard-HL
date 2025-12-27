@@ -3,49 +3,29 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { useNavigate } from "react-router-dom";
 
 import CreateRequestModal from "./CreateRequestModal";
-import "./MaintenancePage.css";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+
 
 export default function MaintenancePage() {
-  const navigate = useNavigate();
-
-  const [openModal, setOpenModal] = useState(false);
-
-  const [requests, setRequests] = useState({
-    new: [
-      { id: "1", name: "Printer Issue", title: "Printer not working", equipment: "Printer 01", type: "corrective", status: "new" },
-      { id: "2", name: "Oil Leak", title: "Oil leakage check", equipment: "CNC 02", type: "preventive", status: "new" }
-    ],
-    in_progress: [
-      { id: "3", name: "Internet Fix", title: "Network Issue", equipment: "Router", type: "corrective", status: "in_progress" }
-    ],
-    repaired: [
-      { id: "4", name: "AC Service", title: "AC serviced", equipment: "Lab AC", type: "preventive", status: "repaired" }
-    ],
-    scrap: [
-      { id: "5", name: "Old Monitor", title: "Disposed", equipment: "Monitor", type: "scrap", status: "scrap" }
-    ]
-  });
-
-  // CREATE NEW REQUEST
-  const handleCreateRequest = (data) => {
-    const newCard = {
-      id: Date.now().toString(),
-      name: data.name,
-      title: data.subject,
-      equipment: data.equipment,
-      type: data.type,
-      status: "new"
-    };
-
-    setRequests(prev => ({
-      ...prev,
-      new: [...prev.new, newCard]
-    }));
-  };
-
-  // DRAG DROP
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
+    const navigate = useNavigate();
+    const [openModal, setOpenModal] = useState(false);
+    const [requests, setRequests] = useState({
+        new: [
+            { id: "1", title: "Printer not working", equipment: "Printer 01", type: "corrective" },
+            { id: "2", title: "Oil leakage check", equipment: "CNC 02", type: "preventive" }
+        ],
+        in_progress: [
+            { id: "3", title: "Network Issue", equipment: "Router", type: "corrective" }
+        ],
+        repaired: [
+            { id: "4", title: "AC Service", equipment: "Lab AC", type: "preventive" }
+        ],
+        scrap: [
+            { id: "5", title: "Old Monitor", equipment: "", type: "scrap" }
+        ]
+    });
+    const handleDragEnd = (result) => {
+  if (!result.destination) return;
 
     const sourceCol = result.source.droppableId;
     const destCol = result.destination.droppableId;
@@ -72,20 +52,49 @@ export default function MaintenancePage() {
     { key: "scrap", label: "Scrap" }
   ];
 
-  return (
-    <div className="maintenance-wrapper">
+    return (
+        <div className="dashboard-wrapper">
 
-      {/* HEADER */}
-      <div className="top-bar">
-        <h2 style={{ margin: 0 }}>Maintenance Requests</h2>
+            {/* Sidebar */}
+            <aside className="sidebar">
+                <div className="sidebar-header">GearGuard</div>
 
-        <button
-          onClick={() => setOpenModal(true)}
-          className="primary-btn"
-        >
-          + Create Request
-        </button>
-      </div>
+                <div className="sidebar-item" onClick={() => navigate("/")}>
+                    Dashboard
+                </div>
+
+                <div className="sidebar-item active" onClick={() => navigate("/maintenance")}>
+                    Maintenance
+                </div>
+
+                <div className="sidebar-item">Equipment</div>
+                <div className="sidebar-item">Calendar</div>
+                <div className="sidebar-item">Teams</div>
+                <div className="sidebar-item">Reports</div>
+            </aside>
+
+
+            {/* Main */}
+            <div className="main-area">
+                <Navbar title="Maintenance Requests" />
+
+                <main className="content">
+                    {/* Create Button */}
+                    <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 10 }}>
+                        <button
+                            onClick={() => setOpenModal(true)}
+                            style={{
+                                background: "#4f46e5",
+                                color: "white",
+                                padding: "8px 14px",
+                                borderRadius: "10px",
+                                border: "none",
+                                cursor: "pointer"
+                            }}
+                        >
+                            + Create Request
+                        </button>
+                    </div>
 
       {/* KANBAN */}
       <DragDropContext onDragEnd={handleDragEnd}>
@@ -146,12 +155,8 @@ export default function MaintenancePage() {
         onCreate={handleCreateRequest}
       />
 
-      {/* BOTTOM BACK BUTTON */}
-      <div className="back-footer">
-        <button className="back-btn" onClick={() => navigate("/")}>
-          ← Back to Dashboard
-        </button>
-      </div>
-    </div>
-  );
+                </main>
+            </div>
+        </div>
+    );
 }
