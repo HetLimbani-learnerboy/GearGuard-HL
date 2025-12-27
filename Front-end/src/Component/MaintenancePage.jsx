@@ -146,8 +146,12 @@ export default function MaintenancePage() {
         onCreate={handleCreateRequest}
       />
 
-                </main>
-            </div>
-        </div>
-    );
+      {/* BOTTOM BACK BUTTON */}
+      <div className="back-footer">
+        <button className="back-btn" onClick={() => navigate("/")}>
+          ← Back to Dashboard
+        </button>
+      </div>
+    </div>
+  );
 }
