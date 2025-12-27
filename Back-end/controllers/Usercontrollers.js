@@ -1,4 +1,5 @@
-const User = require("../models/User.model");
+const User = require("../models/Usermodel.js");
+const bcrypt = require("bcrypt");
 
 exports.createUser = async (req, res) => {
     const { username, email, password } = req.body;
@@ -12,6 +13,20 @@ exports.createUser = async (req, res) => {
         return res.status(409).json({ message: "Email already exists" });
     }
 
-    const user = await User.create({ username, email, password });
-    res.status(201).json(user);
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = await User.create({
+        username,
+        email,
+        password: hashedPassword
+    });
+
+    res.status(201).json({
+        message: "User created successfully",
+        user: {
+            id: user._id,
+            username: user.username,
+            email: user.email
+        }
+    });
 };

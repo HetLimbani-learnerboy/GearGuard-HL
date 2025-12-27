@@ -4,6 +4,8 @@ import "./SignUppage.css";
 import signupImg from "../assets/Signup-img.png";
 
 const SignUppage = () => {
+    const navigate = useNavigate();
+
     const [form, setForm] = useState({
         username: "",
         email: "",
@@ -13,18 +15,47 @@ const SignUppage = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const navigate = useNavigate();
+
+    const [passwordValid, setPasswordValid] = useState({
+        length: false,
+        upper: false,
+        lower: false,
+        number: false,
+        special: false,
+        match: false
+    });
 
     const handleChange = (e) => {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
+    const handlePasswordChange = (value) => {
+        setForm({ ...form, password: value });
+
+        setPasswordValid({
+            length: value.length >= 8,
+            upper: /[A-Z]/.test(value),
+            lower: /[a-z]/.test(value),
+            number: /[0-9]/.test(value),
+            special: /[!@#$%^&*]/.test(value),
+            match: value === form.confirmPassword
+        });
+    };
+
+    const handleConfirmPasswordChange = (value) => {
+        setForm({ ...form, confirmPassword: value });
+        setPasswordValid((prev) => ({
+            ...prev,
+            match: value === form.password
+        }));
+    };
+
     const handleSubmit = async (e) => {
-        navigate('/dashboard');
         e.preventDefault();
 
-        if (form.password !== form.confirmPassword) {
-            alert("Passwords do not match");
+        const allValid = Object.values(passwordValid).every(Boolean);
+        if (!allValid) {
+            alert("Please meet all password requirements");
             return;
         }
 
@@ -47,33 +78,32 @@ const SignUppage = () => {
             }
 
             alert("Signup successful");
+            navigate("/dashboard");
+
         } catch (error) {
-            alert("Error connecting to server. Is your backend running?");
+            alert("Backend not reachable");
+            console.error(error);
         }
     };
 
     return (
         <div className="gearguard-split-screen">
-            {/* Left Side: Triangle Image Area */}
             <div className="gearguard-image-side">
                 <img src={signupImg} alt="GearGuard Asset" className="side-asset" />
             </div>
 
-            {/* Right Side: Signup Form */}
             <div className="gearguard-form-side">
                 <div className="gearguard-card">
-                    <div className="gearguard-header">
-                        <h1 className="gearguard-title">Create Account</h1>
-                        <p className="gearguard-subtitle">Join <b>GearGuard</b> today</p>
-                    </div>
+                    <h1 className="gearguard-title">Create Account</h1>
+                    <p className="gearguard-subtitle">Join <b>GearGuard</b> today</p>
 
                     <form className="gearguard-form" onSubmit={handleSubmit}>
+
                         <div className="form-group">
                             <label>Full Name</label>
                             <input
                                 type="text"
                                 name="username"
-                                placeholder="Enter username"
                                 required
                                 value={form.username}
                                 onChange={handleChange}
@@ -85,7 +115,6 @@ const SignUppage = () => {
                             <input
                                 type="email"
                                 name="email"
-                                placeholder="work@company.com"
                                 required
                                 value={form.email}
                                 onChange={handleChange}
@@ -97,11 +126,9 @@ const SignUppage = () => {
                             <div className="pass-box">
                                 <input
                                     type={showPassword ? "text" : "password"}
-                                    name="password"
-                                    placeholder="Create password"
-                                    required
                                     value={form.password}
-                                    onChange={handleChange}
+                                    onChange={(e) => handlePasswordChange(e.target.value)}
+                                    required
                                 />
                                 <span className="eye-btn" onClick={() => setShowPassword(!showPassword)}>
                                     {showPassword ? "HIDE" : "SHOW"}
@@ -109,16 +136,22 @@ const SignUppage = () => {
                             </div>
                         </div>
 
+                        <div className="password-rules">
+                            <p style={{ color: passwordValid.length ? "green" : "red" }}>• Minimum 8 characters</p>
+                            <p style={{ color: passwordValid.upper ? "green" : "red" }}>• Uppercase letter</p>
+                            <p style={{ color: passwordValid.lower ? "green" : "red" }}>• Lowercase letter</p>
+                            <p style={{ color: passwordValid.number ? "green" : "red" }}>• Number [0-9]</p>
+                            <p style={{ color: passwordValid.special ? "green" : "red" }}>• Special character [!@#$%^&*]</p>
+                        </div>
+
                         <div className="form-group">
                             <label>Confirm Password</label>
                             <div className="pass-box">
                                 <input
                                     type={showConfirmPassword ? "text" : "password"}
-                                    name="confirmPassword"
-                                    placeholder="Confirm password"
-                                    required
                                     value={form.confirmPassword}
-                                    onChange={handleChange}
+                                    onChange={(e) => handleConfirmPasswordChange(e.target.value)}
+                                    required
                                 />
                                 <span className="eye-btn" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                                     {showConfirmPassword ? "HIDE" : "SHOW"}
@@ -126,10 +159,19 @@ const SignUppage = () => {
                             </div>
                         </div>
 
-                        <button type="submit" className="gearguard-btn">Register Now</button>
+                        <div className="password-rules">
+                            <p style={{ color: passwordValid.match ? "green" : "red" }}>• Passwords match</p>
+                        </div>
+
+                        <button type="submit" className="gearguard-btn">
+                            Register Now
+                        </button>
                     </form>
 
-                    <p className="footer-link">Already have an account? <span onClick={() => window.location.href='/loginpage'}>Log In</span></p>
+                    <p className="footer-link">
+                        Already have an account?{" "}
+                        <span onClick={() => navigate("/loginpage")}>Log In</span>
+                    </p>
                 </div>
             </div>
         </div>

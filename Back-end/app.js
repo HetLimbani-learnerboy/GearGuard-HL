@@ -1,19 +1,19 @@
-const express= require('express');
+const express = require("express");
+const cors = require("cors");
+const connectDB = require("./db");
+const userRoutes = require("./routes/Userroutes");
+
 const app = express();
-const cors = require('cors');
+
+connectDB();
 
 app.use(cors());
 app.use(express.json());
 
-// Sample route
-app.get('/', (req, res) => {
-    res.send('Hello World!');
+app.get("/", (req, res) => {
+    res.send("GearGuard Backend Running");
 });
 
-// Start the server
-const PORT = process.env.PORT || 3021;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+app.use("/api", userRoutes);
 
-module.exports = app;   
+module.exports = app;
