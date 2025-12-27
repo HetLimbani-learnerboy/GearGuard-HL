@@ -40,8 +40,7 @@ const LandingPage = () => {
             Get Started
           </button>
         </div>
-        
-        {/* Same Triangle Image Style as Login */}
+
         <div className="hero-image-side">
           <img src={gearLogo} alt="GearGuard Asset" className="hero-asset" />
         </div>
@@ -74,14 +73,40 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* WORKFLOW */}
+      {/* WORKFLOW (ONLY SECTION MODIFIED) */}
       <section className="workflow" id="workflow">
         <h3 className="section-title">How It Works</h3>
+
         <div className="workflow-steps">
-          <div className="step"><span className="step-num">1</span> Register Equipment</div>
-          <div className="step"><span className="step-num">2</span> Create Request</div>
-          <div className="step"><span className="step-num">3</span> Assign Technician</div>
-          <div className="step"><span className="step-num">4</span> Track & Close</div>
+          <div className="step">
+            <span className="step-num">1</span>
+            <h4>Register Equipment</h4>
+            <p>Add machines with details like type, location, and warranty.</p>
+          </div>
+
+          <div className="workflow-arrow">→</div>
+
+          <div className="step">
+            <span className="step-num">2</span>
+            <h4>Create Request</h4>
+            <p>Log maintenance issues or service needs instantly.</p>
+          </div>
+
+          <div className="workflow-arrow">→</div>
+
+          <div className="step">
+            <span className="step-num">3</span>
+            <h4>Assign Technician</h4>
+            <p>System assigns the right technician based on skills.</p>
+          </div>
+
+          <div className="workflow-arrow">→</div>
+
+          <div className="step">
+            <span className="step-num">4</span>
+            <h4>Track & Close</h4>
+            <p>Monitor progress and close tasks with full history.</p>
+          </div>
         </div>
       </section>
 
