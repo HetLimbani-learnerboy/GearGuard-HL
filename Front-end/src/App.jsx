@@ -1,4 +1,5 @@
 import React from "react";
+import Loginpage from "./Component/Loginpage";
 import SignUppage from "./Component/SignUppage";
 import LandingPage from "./Component/landingPage";
 
