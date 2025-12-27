@@ -14,8 +14,7 @@ export default function DashboardPage() {
         <div className="sidebar-item active">
           Dashboard
         </div>
-
-        {/* ⛔ Disabled until route exists */}
+        
         <div className="sidebar-item disabled" onClick={() => navigate("/maintenance")}>
           Maintenance
         </div>

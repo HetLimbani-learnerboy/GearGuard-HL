@@ -5,6 +5,8 @@ import Signuppage from "./Component/Signuppage.jsx";
 import Loginpage from "./Component/Loginpage.jsx";
  import DashboardPage from "./Component/DashboardPage.jsx";
 import MaintenancePage from "./Component/MaintenancePage.jsx";
+import ForgotPassword from "./Component/ForgotPassword.jsx";
+import WorkCenterPage from "./Component/WorkCenterPage.jsx";
 
 export default function App() {
   return (
@@ -14,7 +16,8 @@ export default function App() {
         <Route path='/loginpage' element={<Loginpage />} />
          <Route path='/dashboard' element={<DashboardPage />} /> 
         <Route path='/maintenance' element={<MaintenancePage />} />
-
+        <Route path='/forgotpassword' element={<ForgotPassword />} />
+        <Route path='/workcenter' element={<WorkCenterPage />} />
     </Routes>
   );
 }
