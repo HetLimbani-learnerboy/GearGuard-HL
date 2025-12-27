@@ -4,7 +4,20 @@ import LandingPage from "./Component/LandingPage";
 import Loginpage from "./Component/Loginpage";
 import SignUppage from "./Component/SignUppage";
 import DashboardPage from "./Component/DashboardPage";
+import MaintenancePage from "./Component/MaintenancePage";
 
+<Route path="/maintenance" element={<MaintenancePage />} />
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<DashboardPage />} />
+        <Route path="/maintenance" element={<MaintenancePage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
 const App = () => {
     return (
         <Routes>

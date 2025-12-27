@@ -9,13 +9,14 @@
 //     <header className="navbar">
 //       <h2>{title}</h2>
 
-//       <div className="navbar-right">
+      <div className="navbar-right">
+        <input className="search-input" placeholder="Search..." />
 
-//         <input className="search-input" placeholder="Search..." />
-
-//         <button className="logout-btn">Logout</button>
-
-//         {/* <FiUser className="nav-icon" size={22} onClick={() => navigate("/profile")} /> */}
+        <FiUser
+          className="nav-icon"
+          size={22}
+          onClick={() => navigate("/profile")}
+        />
 
 //         <div className="avatar">AN</div>
 //       </div>

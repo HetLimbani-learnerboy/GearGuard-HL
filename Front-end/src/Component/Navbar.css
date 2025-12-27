@@ -5,4 +5,35 @@
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 1px 4px rgba(0,0,0,.05);
-} */
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.search-input {
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+}
+
+.nav-icon {
+  cursor: pointer;
+}
+
+.nav-icon:hover {
+  color: #4f46e5;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #4f46e5;
+  color: white;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+}

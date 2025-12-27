@@ -1,33 +1,44 @@
+import React from "react";
+import Navbar from "./Navbar";
 import "./DashboardPage.css";
 import { useNavigate } from "react-router-dom";
-// import { FiUser } from "react-icons/fi";
-// import Navbar from "./Navbar";
+
 
 export default function DashboardPage() {
+    const navigate = useNavigate();
+
   return (
     <div className="dashboard-wrapper">
 
       {/* Sidebar */}
       <aside className="sidebar">
-        <div className="sidebar-header">GearGuard</div>
+  <div className="sidebar-header">GearGuard</div>
 
-        <div className="sidebar-item active">Dashboard</div>
-        <div className="sidebar-item">Equipment</div>
-        <div className="sidebar-item">Calendar</div>
-        <div className="sidebar-item">Teams</div>
-        <div className="sidebar-item">Reports</div>
-      </aside>
+  <div className="sidebar-item active" onClick={() => navigate("/")}>
+    Dashboard
+  </div>
+
+  <div className="sidebar-item" onClick={() => navigate("/maintenance")}>
+    Maintenance
+  </div>
+
+  <div className="sidebar-item">Equipment</div>
+  <div className="sidebar-item">Calendar</div>
+  <div className="sidebar-item">Teams</div>
+  <div className="sidebar-item">Reports</div>
+</aside>
+
 
       {/* Main */}
-      <div style={{ flex: 1 }}>
-        
-        {/* Navbar
-        <Navbar title="Dashboard" /> */}
+      <div className="main-area">
 
+        {/* Navbar (reusable) */}
+        <Navbar title="Dashboard" />
 
-        <main style={{ padding: "18px" }}>
-          
-          {/* Cards */}
+        {/* Content */}
+        <main className="content">
+
+          {/* Dashboard Cards */}
           <div className="cards">
             <div className="card">
               <h3>Open Requests</h3>
@@ -35,8 +46,8 @@ export default function DashboardPage() {
             </div>
 
             <div className="card">
-              <h3>Overdue Tasks</h3>
-              <div className="card-value">4</div>
+              <h3>In Progress</h3>
+              <div className="card-value">5</div>
             </div>
 
             <div className="card">
@@ -50,9 +61,9 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Chart placeholder */}
+          {/* Chart / analytics placeholder */}
           <div className="placeholder-box">
-            Coming soon: Request analytics chart
+            Requests by Team (Chart Coming Soon)
           </div>
 
         </main>
