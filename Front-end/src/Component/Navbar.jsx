@@ -1,24 +1,24 @@
-import { FiUser } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
-import "./Navbar.css";
+// // import { FiUser } from "react-icons/fi";
+// import { useNavigate } from "react-router-dom";
+// import "./Navbar.css";
 
-export default function Navbar({ title }) {
-  const navigate = useNavigate();
+// export default function Navbar({ title }) {
+//   const navigate = useNavigate();
 
-  return (
-    <header className="navbar">
-      <h2>{title}</h2>
+//   return (
+//     <header className="navbar">
+//       <h2>{title}</h2>
 
-      <div className="navbar-right">
+//       <div className="navbar-right">
 
-        <input className="search-input" placeholder="Search..." />
+//         <input className="search-input" placeholder="Search..." />
 
-        <button className="logout-btn">Logout</button>
+//         <button className="logout-btn">Logout</button>
 
-        <FiUser className="nav-icon" size={22} onClick={() => navigate("/profile")} />
+//         {/* <FiUser className="nav-icon" size={22} onClick={() => navigate("/profile")} /> */}
 
-        <div className="avatar">AN</div>
-      </div>
-    </header>
-  );
-}
+//         <div className="avatar">AN</div>
+//       </div>
+//     </header>
+//   );
+// }

@@ -1,18 +1,10 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./LandingPageStyle.css";
+import gearLogo from "../assets/GearGuard-img.png"; 
 
-export default function LandingPage() {
-  const heroStyle = {
-    backgroundImage: `
-      linear-gradient(
-        rgba(11, 18, 32, 0.88),
-        rgba(11, 18, 32, 0.88)
-      ),
-      url("/assets/GearGuard-img.png")
-    `,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  };
+const LandingPage = () => {
+  const navigate = useNavigate();
 
   return (
     <div className="landing">
@@ -21,60 +13,83 @@ export default function LandingPage() {
         <div className="nav-links">
           <a href="#features">Features</a>
           <a href="#workflow">Workflow</a>
-          <button className="nav-btn">Sign In</button>
+          <button
+            className="nav-btn"
+            onClick={() => navigate("/loginpage")}
+          >
+            Sign In
+          </button>
         </div>
       </nav>
 
-      <section className="hero" style={heroStyle}>
+      <header className="hero">
         <div className="hero-content">
-          <h2>
+          <h2 className="hero-title">
             Smart Maintenance.
             <br />
-            Zero Downtime.
+            <span>Zero Downtime.</span>
           </h2>
-          <p>
+          <p className="hero-description">
             GearGuard helps organizations track equipment, manage maintenance
             requests, and automate workflows — all in one powerful platform.
           </p>
-          <button className="primary-btn">Sign Up</button>
+          <button
+            className="primary-btn"
+            onClick={() => navigate("/signuppage")}
+          >
+            Get Started
+          </button>
         </div>
-      </section>
+        
+        {/* Same Triangle Image Style as Login */}
+        <div className="hero-image-side">
+          <img src={gearLogo} alt="GearGuard Asset" className="hero-asset" />
+        </div>
+      </header>
 
+      {/* FEATURES */}
       <section className="features" id="features">
-        <h3>Why GearGuard?</h3>
+        <h3 className="section-title">Why GearGuard?</h3>
         <div className="feature-grid">
           <div className="feature-card">
+            <div className="icon-circle">01</div>
             <h4>Equipment Tracking</h4>
             <p>Centralized asset management with ownership and location.</p>
           </div>
           <div className="feature-card">
+            <div className="icon-circle">02</div>
             <h4>Kanban Workflow</h4>
             <p>Visual drag-and-drop lifecycle management.</p>
           </div>
           <div className="feature-card">
+            <div className="icon-circle">03</div>
             <h4>Preventive Scheduling</h4>
             <p>Calendar-based routine maintenance planning.</p>
           </div>
           <div className="feature-card">
+            <div className="icon-circle">04</div>
             <h4>Smart Automation</h4>
             <p>Auto-assign technicians intelligently.</p>
           </div>
         </div>
       </section>
 
+      {/* WORKFLOW */}
       <section className="workflow" id="workflow">
-        <h3>How It Works</h3>
+        <h3 className="section-title">How It Works</h3>
         <div className="workflow-steps">
-          <div className="step">Register Equipment</div>
-          <div className="step">Create Request</div>
-          <div className="step">Assign Technician</div>
-          <div className="step">Track & Close</div>
+          <div className="step"><span className="step-num">1</span> Register Equipment</div>
+          <div className="step"><span className="step-num">2</span> Create Request</div>
+          <div className="step"><span className="step-num">3</span> Assign Technician</div>
+          <div className="step"><span className="step-num">4</span> Track & Close</div>
         </div>
       </section>
 
       <footer className="footer">
-        <p>© 2025 GearGuard | Hackathon Project</p>
+        <p>© 2025 GearGuard | Predictive Maintenance Platform</p>
       </footer>
     </div>
   );
-}
+};
+
+export default LandingPage;
