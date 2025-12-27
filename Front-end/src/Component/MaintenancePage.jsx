@@ -1,16 +1,16 @@
-import React from "react";
-import Navbar from "./Navbar";
-import "./MaintenancePage.css";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import CreateRequestModal from "./CreateRequestModal";
+import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { useNavigate } from "react-router-dom";
 
+import CreateRequestModal from "./CreateRequestModal";
+import "./MaintenancePage.css";
 
 export default function MaintenancePage() {
-    const navigate = useNavigate();
-    const [openModal, setOpenModal] = useState(false);
-    const [requests, setRequests] = useState({
+  const navigate = useNavigate();
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const [requests, setRequests] = useState({
     new: [
       { id: "1", name: "Printer Issue", title: "Printer not working", equipment: "Printer 01", type: "corrective", status: "new" },
       { id: "2", name: "Oil Leak", title: "Oil leakage check", equipment: "CNC 02", type: "preventive", status: "new" }
@@ -26,7 +26,6 @@ export default function MaintenancePage() {
     ]
   });
 
-  // CREATE NEW REQUEST
   const handleCreateRequest = (data) => {
     const newCard = {
       id: Date.now().toString(),
@@ -43,8 +42,7 @@ export default function MaintenancePage() {
     }));
   };
 
-  // DRAG DROP
-  const handleDragEnd = async (result) => {
+  const handleDragEnd = (result) => {
     if (!result.destination) return;
 
     const sourceCol = result.source.droppableId;
@@ -54,8 +52,8 @@ export default function MaintenancePage() {
     const destItems = Array.from(requests[destCol]);
 
     const [movedItem] = sourceItems.splice(result.source.index, 1);
-
     movedItem.status = destCol;
+
     destItems.splice(result.destination.index, 0, movedItem);
 
     setRequests({
@@ -63,9 +61,6 @@ export default function MaintenancePage() {
       [sourceCol]: sourceItems,
       [destCol]: destItems
     });
-
-    // (optional backend save later)
-    // await fetch(...)
   };
 
   const columns = [
@@ -77,10 +72,10 @@ export default function MaintenancePage() {
 
   return (
     <div className="maintenance-wrapper">
-
+      
       {/* HEADER */}
       <div className="top-bar">
-        <h2>Maintenance Requests</h2>
+        <h2 style={{ margin: 0 }}>Maintenance Requests</h2>
 
         <button
           onClick={() => setOpenModal(true)}
@@ -142,12 +137,20 @@ export default function MaintenancePage() {
         </div>
       </DragDropContext>
 
-      {/* MODAL */}
+      {/* CREATE MODAL */}
       <CreateRequestModal
         open={openModal}
         onClose={() => setOpenModal(false)}
         onCreate={handleCreateRequest}
       />
+
+      {/* BOTTOM BACK BUTTON */}
+      <div className="back-footer">
+        <button className="back-btn" onClick={() => navigate("/")}>
+          ← Back to Dashboard
+        </button>
+      </div>
+
     </div>
   );
 }
