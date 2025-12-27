@@ -10,10 +10,7 @@ export default function MaintenancePage() {
 
   const [openModal, setOpenModal] = useState(false);
 
-export default function MaintenancePage() {
-    const navigate = useNavigate();
-    const [openModal, setOpenModal] = useState(false);
-    const [requests, setRequests] = useState({
+  const [requests, setRequests] = useState({
     new: [
       { id: "1", name: "Printer Issue", title: "Printer not working", equipment: "Printer 01", type: "corrective", status: "new" },
       { id: "2", name: "Oil Leak", title: "Oil leakage check", equipment: "CNC 02", type: "preventive", status: "new" }
@@ -29,7 +26,6 @@ export default function MaintenancePage() {
     ]
   });
 
-  // CREATE NEW REQUEST
   const handleCreateRequest = (data) => {
     const newCard = {
       id: Date.now().toString(),
@@ -46,7 +42,6 @@ export default function MaintenancePage() {
     }));
   };
 
-  // DRAG DROP
   const handleDragEnd = (result) => {
     if (!result.destination) return;
 
@@ -77,7 +72,7 @@ export default function MaintenancePage() {
 
   return (
     <div className="maintenance-wrapper">
-
+      
       {/* HEADER */}
       <div className="top-bar">
         <h2 style={{ margin: 0 }}>Maintenance Requests</h2>
@@ -155,6 +150,7 @@ export default function MaintenancePage() {
           ← Back to Dashboard
         </button>
       </div>
+
     </div>
   );
 }
