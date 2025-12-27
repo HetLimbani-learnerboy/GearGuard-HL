@@ -51,6 +51,4 @@ const maintenanceRequestSchema = new mongoose.Schema(
 );
 
 /* 🔐 SAFE EXPORT (NO OVERWRITE ERROR) */
-module.exports =
-  mongoose.models.MaintenanceRequest ||
-  mongoose.model("MaintenanceRequest", maintenanceRequestSchema);
+module.exports = mongoose.model("maintenancerequests", maintenanceRequestSchema) ;
