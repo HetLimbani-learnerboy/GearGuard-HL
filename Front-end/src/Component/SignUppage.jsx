@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./SignUppage.css";
-import signupImg from "../assets/Signup-img.png";
+import lockimg from "../assets/lock-img.png";
 
 const SignUppage = () => {
     const navigate = useNavigate();
-
     const [form, setForm] = useState({
         username: "",
         email: "",
@@ -15,7 +14,6 @@ const SignUppage = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
     const [passwordValid, setPasswordValid] = useState({
         length: false,
         upper: false,
@@ -78,6 +76,9 @@ const SignUppage = () => {
             }
 
             alert("Signup successful");
+            localStorage.setItem("username", data.user.username);
+            localStorage.setItem("email", data.user.email);
+
             navigate("/dashboard");
 
         } catch (error) {
@@ -89,7 +90,9 @@ const SignUppage = () => {
     return (
         <div className="gearguard-split-screen">
             <div className="gearguard-image-side">
-                <img src={signupImg} alt="GearGuard Asset" className="side-asset" />
+                <img src={lockimg} alt="Signup Illustration" className="lock-image" />
+                <h2>Welcome to GearGuard</h2>
+                <p>Your ultimate gear management solution</p>
             </div>
 
             <div className="gearguard-form-side">
@@ -173,8 +176,8 @@ const SignUppage = () => {
                         <span onClick={() => navigate("/loginpage")}>Log In</span>
                     </p>
                     <p className="footer-link">
-            <span onClick={() => navigate("/")}>← Back to Home</span>
-          </p>
+                        <span onClick={() => navigate("/")}>← Back to Home</span>
+                    </p>
                 </div>
             </div>
         </div>

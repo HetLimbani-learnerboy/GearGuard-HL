@@ -5,7 +5,6 @@ import "./ForgotPassword.css";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState("");
 
@@ -26,7 +25,6 @@ const ForgotPassword = () => {
     match: false
   });
 
-  // STEP 1
   const checkEmail = async () => {
     const res = await fetch("http://localhost:3021/api/check-email", {
       method: "POST",
@@ -38,11 +36,9 @@ const ForgotPassword = () => {
       alert("Email not found");
       return;
     }
-
     setStep(2);
   };
 
-  // PASSWORD RULES
   const handlePasswordChange = (value) => {
     setForm({ ...form, password: value });
 
@@ -64,7 +60,6 @@ const ForgotPassword = () => {
     }));
   };
 
-  // STEP 2
   const submitPassword = async () => {
     const allValid = Object.values(valid).every(Boolean);
     if (!allValid) {
@@ -85,87 +80,96 @@ const ForgotPassword = () => {
       alert("Password update failed");
       return;
     }
-
     alert("Password updated successfully");
     navigate("/loginpage");
   };
 
-
-
-return (
-  <div className="gearguard-split-screen">
-    <div className="gearguard-image-side">
+  return (
+    <div className="gearguard-split-screen">
+      <div className="gearguard-image-leftside">
         <div className="triangle-clipper">
-            <img src={forgotImg} alt="Forgot Password Asset" className="side-asset" />
+          <img src={forgotImg} alt="Forgot Password Asset" className="side-asset" />
         </div>
-        </div>
-    <div className="gearguard-form-side">
-      <div className="gearguard-card">
-        <h1 className="gearguard-title">Forgot Password</h1>
-        <p className="gearguard-subtitle">Reset your <b>Maintenance Account</b></p>
-
-        <div className="gearguard-form">
-          {step === 1 && (
-            <div className="form-group">
-              <label>Work Email</label>
-              <input
-                type="email"
-                placeholder="Enter registered email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <button className="gearguard-btn" onClick={checkEmail}>Next Step</button>
-            </div>
-          )}
-
-          {step === 2 && (
-            <>
-              <div className="form-group">
-                <label>New Password</label>
-                <div className="pass-box">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="New Password"
-                    onChange={(e) => handlePasswordChange(e.target.value)}
-                  />
-                  <span className="eye-btn" onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? "HIDE" : "SHOW"}
-                  </span>
-                </div>
-              </div>
-
-              <div className="password-rules-grid">
-                <p className={valid.length ? "v-valid" : "v-invalid"}>• Min 8 characters</p>
-                <p className={valid.upper ? "v-valid" : "v-invalid"}>• Uppercase</p>
-                <p className={valid.lower ? "v-valid" : "v-invalid"}>• Lowercase</p>
-                <p className={valid.number ? "v-valid" : "v-invalid"}>• Number</p>
-                <p className={valid.special ? "v-valid" : "v-invalid"}>• Special char</p>
-                <p className={valid.match ? "v-valid" : "v-invalid"}>• Passwords match</p>
-              </div>
-
-              <div className="form-group">
-                <label>Confirm Password</label>
-                <div className="pass-box">
-                  <input
-                    type={showConfirm ? "text" : "password"}
-                    placeholder="Confirm Password"
-                    onChange={(e) => handleConfirmChange(e.target.value)}
-                  />
-                  <span className="eye-btn" onClick={() => setShowConfirm(!showConfirm)}>
-                    {showConfirm ? "HIDE" : "SHOW"}
-                  </span>
-                </div>
-              </div>
-
-              <button className="gearguard-btn" onClick={submitPassword}>Update Password</button>
-            </>
-          )}
-        </div>
-        <p className="footer-link">Remembered? <span onClick={() => navigate("/loginpage")}>Back to Login</span></p>
       </div>
-    </div>
-  </div>
+      <div className="gearguard-form-side">
+        <div className="gearguard-card">
+          <h1 className="gearguard-title">Forgot Password</h1>
+          <p className="gearguard-subtitle">Reset your <b>Maintenance Account</b></p>
+
+          <div className="gearguard-form">
+            {step === 1 && (
+              <div className="form-group">
+                <label>Work Email</label>
+                <input
+                  type="email"
+                  placeholder="Enter registered email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <button className="gearguard-btn" onClick={checkEmail}>Next Step</button>
+              </div>
+            )}
+
+            {step === 2 && (
+              <>
+                <div className="form-group">
+                  <label>New Password</label>
+                  <div className="pass-box">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      placeholder="New Password"
+                      onChange={(e) => handlePasswordChange(e.target.value)}
+                    />
+                    <span className="eye-btn" onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? "HIDE" : "SHOW"}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="password-rules-grid">
+                  <p className={valid.length ? "v-valid" : "v-invalid"}>• Min 8 characters</p>
+                  <p className={valid.upper ? "v-valid" : "v-invalid"}>• Uppercase</p>
+                  <p className={valid.lower ? "v-valid" : "v-invalid"}>• Lowercase</p>
+                  <p className={valid.number ? "v-valid" : "v-invalid"}>• Number</p>
+                  <p className={valid.special ? "v-valid" : "v-invalid"}>• Special char</p>
+                </div>
+
+                <div className="form-group">
+                  <label>Confirm Password</label>
+                  <div className="pass-box">
+                    <input
+                      type={showConfirm ? "text" : "password"}
+                      placeholder="Confirm Password"
+                      onChange={(e) => handleConfirmChange(e.target.value)}
+                    />
+                    <span className="eye-btn" onClick={() => setShowConfirm(!showConfirm)}>
+                      {showConfirm ? "HIDE" : "SHOW"}
+                    </span>
+                  </div>
+                </div>
+                <div className="password-rules-grid">
+                  <p className={valid.match ? "v-valid" : "v-invalid"}>• Passwords match</p>
+                </div>
+                <button
+                  className="gearguard-btn"
+                  onClick={submitPassword}
+                  disabled={!Object.values(valid).every(Boolean)}
+                  style={{
+                    opacity: Object.values(valid).every(Boolean) ? 1 : 0.6,
+                    cursor: Object.values(valid).every(Boolean) ? "pointer" : "not-allowed"
+                  }}
+                >
+                  Update Password
+                </button>
+
+              </>
+            )}
+          </div>
+          <p className="footer-link">Remembered? <span onClick={() => navigate("/loginpage")}>Back to Login</span></p>
+        </div>
+      </div>
+    </div >
   );
 };
 

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Sidebar from "./Sidebar";
+import "./WorkCenterPageall.css";
 
 const WorkCenterPageall = () => {
   const navigate = useNavigate();
-
   const [workCenters, setWorkCenters] = useState([]);
   const [search, setSearch] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     fetch(`http://localhost:3021/api/workcenters?search=${search}`)
@@ -15,107 +17,62 @@ const WorkCenterPageall = () => {
   }, [search]);
 
   return (
-    <div style={{ padding: 30 }}>
-      <h2>Work Centers</h2>
+    <div className="wc-page-container">
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-      {/* SEARCH */}
-      <input
-        type="text"
-        placeholder="Search by state, electronic, mechanical..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        style={searchStyle}
-      />
+      <div className="wc-header-section">
+        <div className="header-left-group">
+          <button className="menu-toggle-btn" onClick={() => setIsSidebarOpen(true)}>
+            <div className="bar"></div>
+            <div className="bar"></div>
+            <div className="bar"></div>
+          </button>
+          <h2 className="wc-title">Work Centers</h2>
+        </div>
 
-      {/* TABLE */}
-      <div style={{ overflowX: "auto" }}>
-        <table style={tableStyle}>
+        <input
+          type="text"
+          className="wc-search-input"
+          placeholder="Search by state, category, or code..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
+      <div className="wc-table-wrapper">
+        <table className="wc-data-table">
           <thead>
             <tr>
-              <th style={thStyle}>Work Center</th>
-              <th style={thStyle}>Code</th>
-              <th style={thStyle}>Tag</th>
-              <th style={thStyle}>Alternative Work Center</th>
-              <th style={thStyle}>Cost / Hour (₹)</th>
-              <th style={thStyle}>Time Efficiency</th>
-              <th style={thStyle}>OEE Target</th>
+              <th>Work Center</th>
+              <th>Code</th>
+              <th>Tag</th>
+              <th>Alternative Center</th>
+              <th>Cost / Hr</th>
+              <th>Efficiency</th>
+              <th>OEE Target</th>
             </tr>
           </thead>
-
           <tbody>
             {workCenters.length === 0 ? (
-              <tr>
-                <td colSpan="7" style={emptyStyle}>
-                  No work centers found
-                </td>
-              </tr>
+              <tr><td colSpan="7" className="wc-empty-row">No work centers found</td></tr>
             ) : (
-              workCenters.map((wc) => (
-                <tr key={wc._id}>
-                  <td style={tdStyle}>{wc.work_center}</td>
-                  <td style={tdStyle}>{wc.code}</td>
-                  <td style={tdStyle}>{wc.tag}</td>
-                  <td style={tdStyle}>{wc.alternative_work_center}</td>
-                  <td style={tdStyle}>₹{wc.cost_per_hour}</td>
-                  <td style={tdStyle}>{wc.cost_time_efficiency}</td>
-                  <td style={tdStyle}>{wc.oee_target}</td>
+              workCenters.map((wc, index) => (
+                <tr key={wc._id} style={{ "--row-index": index }}>
+                  <td data-label="Work Center"><b>{wc.work_center}</b></td>
+                  <td data-label="Code"><span className="wc-badge-code">{wc.code}</span></td>
+                  <td data-label="Tag"><span className={`wc-tag ${wc.tag?.toLowerCase()}`}>{wc.tag}</span></td>
+                  <td data-label="Alternative">{wc.alternative_work_center || "N/A"}</td>
+                  <td data-label="Cost">₹{wc.cost_per_hour}</td>
+                  <td data-label="Efficiency">{wc.cost_time_efficiency}%</td>
+                  <td data-label="OEE Target">{wc.oee_target}%</td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
       </div>
-
-      {/* BACK BUTTON */}
-      <div style={{ marginTop: 30 }}>
-        <button style={backBtn} onClick={() => navigate(-1)}>
-          ← Back
-        </button>
-      </div>
     </div>
   );
-};
-
-/* ---------------- STYLES ---------------- */
-
-const searchStyle = {
-  padding: 10,
-  width: 380,
-  marginBottom: 20
-};
-
-const tableStyle = {
-  width: "100%",
-  borderCollapse: "collapse",
-  minWidth: 1000
-};
-
-const thStyle = {
-  padding: "12px",
-  background: "#f8fafc",
-  borderBottom: "2px solid #cbd5e1",
-  textAlign: "left",
-  fontWeight: 700
-};
-
-const tdStyle = {
-  padding: "12px",
-  borderBottom: "1px solid #e2e8f0"
-};
-
-const emptyStyle = {
-  textAlign: "center",
-  padding: 20
-};
-
-const backBtn = {
-  padding: "10px 22px",
-  background: "#2563eb",
-  color: "#fff",
-  border: "none",
-  borderRadius: 8,
-  cursor: "pointer",
-  fontWeight: 600
 };
 
 export default WorkCenterPageall;
