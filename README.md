@@ -4,6 +4,11 @@ Gear-Guard is a professional-grade **Computerized Maintenance Management System 
 
 ---
 
+## 🏆 Hackathon Information
+- **Event:** Odoo x Adani University Hackathon '26
+- **Round:** Virtual Round Submission
+- **Objective:** Develop a maintenance module connecting Equipment, Teams, and Requests.
+
 ## 👥 Meet the Team
 Developed with passion by:
 - **Het Limbani** - **Anuj Raval** - **Sahil Dobaria** - **Tirth Panchal** 
