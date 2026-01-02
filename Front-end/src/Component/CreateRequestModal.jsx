@@ -1,65 +1,64 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./CreateRequestModal.css";
+import Sidebar from "./Sidebar";
+import "./CreateRequestPage.css";
 
-export default function CreateRequestModal({ open, onClose, onCreate }) {
+export default function CreateRequestPage() {
     const navigate = useNavigate();
-
-    // Initial state to allow for easy resetting
-    const initialState = {
-        name: "",
-        subject: "",
-        maintenanceFor: "equipment",
-        selectedTarget: "", 
-        address: "",
-        category: "",
-        requestDate: new Date().toISOString().split('T')[0], // Default to today
-        type: "corrective",
-        team: "",
-        technician: "",
-        scheduledDate: "",
-        duration: "",
-        priority: 0,
-        company: "My Company",
-        notes: "",
-        instructions: ""
-    };
-
-    const [form, setForm] = useState(initialState);
-
-    // 1. Reset form when modal opens to clear stale data
-    useEffect(() => {
-        if (open) {
-            setForm(prev => ({...initialState, maintenanceFor: prev.maintenanceFor}));
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [form, setForm] = useState(() => {
+        const savedDraft = localStorage.getItem("maintenanceDraft");
+        if (savedDraft) {
+            return JSON.parse(savedDraft);
         }
-    }, [open]);
+        return {
+            name: localStorage.getItem("username") ? localStorage.getItem("username").replace(/"/g, "") : "",
+            subject: "",
+            maintenanceFor: "equipment",
+            selectedTarget: "",
+            address: "",
+            category: "",
+            requestDate: new Date().toISOString().split('T')[0],
+            type: "corrective",
+            team: "",
+            technician: "",
+            scheduledDate: "",
+            duration: "",
+            priority: 0,
+            company: "",
+            notes: "",
+            instructions: ""
+        };
+    });
 
-    // 2. Load external selections (Teams & Work Centers) from LocalStorage
     useEffect(() => {
-        if (!open) return;
+        localStorage.setItem("maintenanceDraft", JSON.stringify(form));
+    }, [form]);
 
-        // Load Team Data
+    useEffect(() => {
         const storedTeam = localStorage.getItem("selectedTeam");
         if (storedTeam) {
             const team = JSON.parse(storedTeam);
             setForm((prev) => ({
                 ...prev,
                 team: team.team_name,
-                technician: team.team_members.join(", ")
+                technician: team.team_members.join(", "),
+                company: team.company_location
             }));
         }
 
-        // Load Work Center Selection
         const storedWC = localStorage.getItem("selectedWorkCenter");
-        if (storedWC && form.maintenanceFor === "work_center") {
+        if (storedWC) {
             const wc = JSON.parse(storedWC);
             setForm((prev) => ({
                 ...prev,
+                maintenanceFor: "work_center",
                 selectedTarget: wc.work_center,
-                address: `Code: ${wc.code} | Tag: ${wc.tag} | Alt: ${wc.alternative_work_center || 'N/A'}`
+                address: prev.address || `${wc.work_center} / ${wc.code}`,
+                category: prev.category || wc.category
             }));
         }
-    }, [open, form.maintenanceFor]);
+    }, []);
 
     const handleMaintenanceForChange = (val) => {
         setForm({ ...form, maintenanceFor: val, selectedTarget: "", address: "" });
@@ -68,227 +67,179 @@ export default function CreateRequestModal({ open, onClose, onCreate }) {
         }
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Simple validation to ensure data integrity
-        if (!form.name || !form.subject || !form.selectedTarget) {
-            alert("Please fill in Requester Name, Subject, and Target.");
-            return;
-        }
-        onCreate(form); 
-        onClose();
+    const handleCleanup = () => {
+        localStorage.removeItem("maintenanceDraft");
+        localStorage.removeItem("selectedWorkCenter");
+        localStorage.removeItem("selectedTeam");
     };
 
-    if (!open) return null;
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!form.team) {
+            alert("Please assign a team before submitting.");
+            return;
+        }
+        try {
+            const res = await fetch("http://localhost:3021/api/maintenance", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(form)
+            });
+
+            if (res.ok) {
+                alert("Maintenance Request Published!");
+                handleCleanup();
+                navigate("/maintenance");
+            }
+        } catch (err) {
+            console.error("Submission failed:", err);
+        }
+    };
+
+    const updateField = (field, value) => {
+        setForm(prev => ({ ...prev, [field]: value }));
+    };
 
     return (
-        <div className="modal-overlay">
-            <div className="modal-box">
-                <h2 className="modal-header">Create Maintenance Request</h2>
+        <div className="form-page-layout">
+            <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-                <div className="form-grid">
-                    {/* LEFT SIDE */}
-                    <div className="form-column">
-                        <div className="form-row">
-                            <label>Requester Name</label>
-                            <input
-                                className="modal-input"
-                                value={form.name}
-                                onChange={(e) => setForm({ ...form, name: e.target.value })}
-                                placeholder="Your Name"
-                            />
-                        </div>
+            <div className="form-page-content">
+                <header className="form-page-header">
+                    <button className="menu-toggle-btn" onClick={() => setIsSidebarOpen(true)}>
+                        <div className="bar"></div>
+                        <div className="bar"></div>
+                        <div className="bar"></div>
+                    </button>
+                    <h1>New Maintenance Request</h1>
+                </header>
 
-                        <div className="form-row">
-                            <label>Subject / Title</label>
-                            <input
-                                className="modal-input"
-                                value={form.subject}
-                                onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                                placeholder="Issue Summary"
-                            />
-                        </div>
+                <form className="request-form-card" onSubmit={handleSubmit}>
+                    <div className="form-grid-container">
 
-                        <div className="form-row">
-                            <label>Maintenance For</label>
-                            <select
-                                className="modal-input"
-                                value={form.maintenanceFor}
-                                onChange={(e) => handleMaintenanceForChange(e.target.value)}
-                            >
-                                <option value="equipment">Equipment</option>
-                                <option value="work_center">Work Center</option>
-                            </select>
-                        </div>
+                        <section className="form-column">
+                            <h3 className="section-label">General & Target Information</h3>
 
-                        <div className="form-row">
-                            <label>
-                                {form.maintenanceFor === "equipment" ? "Equipment Name" : "Work Center Name"}
-                            </label>
-                            <div className="input-group" style={{ display: "flex", gap: "8px" }}>
-                                <input
-                                    className="modal-input"
-                                    style={{ flex: 1 }}
-                                    value={form.selectedTarget}
-                                    readOnly={form.maintenanceFor === "work_center"}
-                                    onChange={(e) => setForm({ ...form, selectedTarget: e.target.value })}
-                                    placeholder={`Enter ${form.maintenanceFor}`}
-                                />
-                                {form.maintenanceFor === "work_center" && (
-                                    <button
-                                        className="select-btn-inline"
-                                        type="button"
-                                        onClick={() => navigate("/workcenter")}
-                                    >
-                                        Select
-                                    </button>
-                                )}
+                            <div className="field-group">
+                                <label>Requester Name <span className="req-star">*</span></label>
+                                <input required value={form.name} onChange={(e) => updateField('name', e.target.value)} placeholder="e.g. John Doe" />
                             </div>
-                        </div>
 
-                        <div className="form-row">
-                            <label>Location Address</label>
-                            <input
-                                className={`modal-input ${form.maintenanceFor === "work_center" ? "disabled-input" : ""}`}
-                                value={form.address}
-                                readOnly={form.maintenanceFor === "work_center"}
-                                onChange={(e) => setForm({ ...form, address: e.target.value })}
-                                placeholder={form.maintenanceFor === "work_center" ? "Auto-filled on selection" : "Enter equipment location"}
-                            />
-                        </div>
+                            <div className="field-group">
+                                <label>Subject / Title <span className="req-star">*</span></label>
+                                <input required value={form.subject} onChange={(e) => updateField('subject', e.target.value)} placeholder="Short description of the issue" />
+                            </div>
 
-                        <div className="form-row">
-                            <label>Category</label>
-                            <input
-                                className="modal-input"
-                                value={form.category}
-                                onChange={(e) => setForm({ ...form, category: e.target.value })}
-                                placeholder="e.g. Mechanical"
-                            />
-                        </div>
-
-                        <div className="form-row">
-                            <label>Request Date</label>
-                            <input
-                                className="modal-input"
-                                type="date"
-                                value={form.requestDate}
-                                onChange={(e) => setForm({ ...form, requestDate: e.target.value })}
-                            />
-                        </div>
-                    </div>
-
-                    {/* RIGHT SIDE */}
-                    <div className="form-column">
-                        <div className="form-row">
-                            <label>Assigned Team</label>
-                            <div className="input-group" style={{ display: "flex", gap: "8px" }}>
-                                <input className="modal-input disabled-input" style={{ flex: 1 }} value={form.team} readOnly />
-                                <button
-                                    className="select-btn-inline"
-                                    type="button"
-                                    onClick={() => navigate("/teams")}
+                            <div className="field-group">
+                                <label>Maintenance For <span className="req-star">*</span></label>
+                                <select
+                                    value={form.maintenanceFor}
+                                    onChange={(e) => handleMaintenanceForChange(e.target.value)}
                                 >
-                                    Find
-                                </button>
+                                    <option value="equipment">Equipment Only</option>
+                                    <option value="work_center">Work Center</option>
+                                </select>
+                            </div>
+
+                            {form.maintenanceFor === "work_center" && (
+                                <div className="field-group">
+                                    <label>Associated Work Center <span className="req-star">*</span></label>
+                                    <div className="input-with-action">
+                                        <input
+                                            required
+                                            readOnly
+                                            value={form.selectedTarget}
+                                            placeholder="Select from Master List"
+                                        />
+                                        <button
+                                            type="button"
+                                            className="browse-btn"
+                                            onClick={() => navigate("/workcenterpage")}
+                                        >
+                                            Browse
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            <div className="field-group">
+                                <label>Location Details / Address <span className="req-star">*</span></label>
+                                <input required value={form.address} onChange={(e) => updateField('address', e.target.value)} placeholder="Building/Floor/Line" />
+                            </div>
+
+                            <div className="field-group">
+                                <label>Category <span className="req-star">*</span></label>
+                                <input required value={form.category} onChange={(e) => updateField('category', e.target.value)} placeholder="e.g. Mechanical, Electrical" />
+                            </div>
+
+                            <div className="field-group">
+                                <label>Request Date <span className="req-star">*</span></label>
+                                <input required type="date" value={form.requestDate} onChange={(e) => updateField('requestDate', e.target.value)} />
+                            </div>
+                        </section>
+
+                        <section className="form-column">
+                            <h3 className="section-label">Assignment & Scheduling</h3>
+
+                            <div className="field-group">
+                                <label>Assigned Team <span className="req-star">*</span></label>
+                                <div className="input-with-action">
+                                    <input required readOnly value={form.team} placeholder="Assign a team" />
+                                    <button type="button" className="browse-btn" onClick={() => navigate("/teams")}>Find Team</button>
+                                </div>
+                            </div>
+
+                            <div className="field-group">
+                                <label>Technicians <span className="req-star">*</span></label>
+                                <input required readOnly value={form.technician} className="readonly-input" placeholder="Team members will appear here" />
+                            </div>
+
+                            <div className="field-group">
+                                <label>Scheduled Start <span className="req-star">*</span></label>
+                                <input required type="datetime-local" value={form.scheduledDate} onChange={(e) => updateField('scheduledDate', e.target.value)} />
+                            </div>
+
+                            <div className="field-group">
+                                <label>Duration (Hrs) <span className="req-star">*</span></label>
+                                <input required type="number" value={form.duration} onChange={(e) => updateField('duration', e.target.value)} placeholder="e.g. 2" />
+                            </div>
+
+                            <div className="field-group">
+                                <label>Priority (0-3) <span className="req-star">*</span></label>
+                                <input required type="number" min="0" max="3" value={form.priority} onChange={(e) => updateField('priority', e.target.value)} />
+                            </div>
+
+                            <div className="field-group">
+                                <label>Company / Location <span className="req-star">*</span></label>
+                                <input required readOnly value={form.company} className="readonly-input" placeholder="Company location" />
+                            </div>
+                        </section>
+                    </div>
+
+                    <div className="form-full-width">
+                        <div className="field-group">
+                            <label>Maintenance Type <span className="req-star">*</span></label>
+                            <div className="radio-selection">
+                                <label><input type="radio" value="corrective" checked={form.type === "corrective"} onChange={(e) => updateField('type', e.target.value)} /> Corrective</label>
+                                <label><input type="radio" value="preventive" checked={form.type === "preventive"} onChange={(e) => updateField('type', e.target.value)} /> Preventive</label>
                             </div>
                         </div>
-
-                        <div className="form-row">
-                            <label>Technician(s)</label>
-                            <input className="modal-input disabled-input" value={form.technician} readOnly />
+                        <div className="field-group">
+                            <label>Repair Instructions <span className="req-star">*</span></label>
+                            <textarea required value={form.instructions} onChange={(e) => updateField('instructions', e.target.value)} rows="3" placeholder="Step-by-step instructions for the technician..." />
                         </div>
-
-                        <div className="form-row">
-                            <label>Scheduled Start</label>
-                            <input
-                                className="modal-input"
-                                type="datetime-local"
-                                value={form.scheduledDate}
-                                onChange={(e) => setForm({ ...form, scheduledDate: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="form-row">
-                            <label>Duration (Hrs)</label>
-                            <input
-                                className="modal-input"
-                                type="number"
-                                value={form.duration}
-                                onChange={(e) => setForm({ ...form, duration: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="form-row">
-                            <label>Priority (0-3)</label>
-                            <input
-                                className="modal-input"
-                                type="number"
-                                min="0"
-                                max="3"
-                                value={form.priority}
-                                onChange={(e) => setForm({ ...form, priority: e.target.value })}
-                            />
-                        </div>
-
-                        <div className="form-row">
-                            <label>Maintenance Type</label>
-                            <div className="radio-group">
-                                <label>
-                                    <input
-                                        type="radio"
-                                        value="corrective"
-                                        checked={form.type === "corrective"}
-                                        onChange={(e) => setForm({ ...form, type: e.target.value })}
-                                    /> Corrective
-                                </label>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        value="preventive"
-                                        checked={form.type === "preventive"}
-                                        onChange={(e) => setForm({ ...form, type: e.target.value })}
-                                    /> Preventive
-                                </label>
-                            </div>
-                        </div>
-
-                        <div className="form-row">
-                            <label>Company</label>
-                            <input
-                                className="modal-input"
-                                value={form.company}
-                                onChange={(e) => setForm({ ...form, company: e.target.value })}
-                            />
+                        <div className="field-group">
+                            <label>Notes & Observations</label>
+                            <textarea value={form.notes} onChange={(e) => updateField('notes', e.target.value)} rows="2" placeholder="Additional context (Optional)" />
                         </div>
                     </div>
-                </div>
 
-                <div className="full-width-section">
-                    <div className="form-row">
-                        <label>Notes</label>
-                        <textarea
-                            className="modal-input"
-                            rows="2"
-                            value={form.notes}
-                            onChange={(e) => setForm({ ...form, notes: e.target.value })}
-                        />
-                    </div>
-                    <div className="form-row">
-                        <label>Instructions</label>
-                        <textarea
-                            className="modal-input"
-                            rows="2"
-                            value={form.instructions}
-                            onChange={(e) => setForm({ ...form, instructions: e.target.value })}
-                        />
-                    </div>
-                </div>
-
-                <div className="modal-actions">
-                    <button className="cancel-btn" onClick={onClose}>Cancel</button>
-                    <button className="create-btn" onClick={handleSubmit}>Submit Request</button>
-                </div>
+                    <footer className="form-footer">
+                        <button type="button" className="btn-cancel" onClick={() => { handleCleanup(); navigate("/maintenance"); }}>Discard</button>
+                        <button type="submit" className="btn-submit">Publish Request</button>
+                    </footer>
+                </form>
             </div>
         </div>
     );

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Loginpage.css";
-import gearsignimg from "../assets/Gearguard-img.png"; 
+import gearsignimg from "../assets/Gearguard-img.png";
 
 const Loginpage = () => {
   const [email, setEmail] = useState("");
@@ -11,24 +11,21 @@ const Loginpage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const response = await fetch("http://localhost:3021/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-
       const data = await response.json();
-
       if (!response.ok) {
         alert(data.message || "Login failed");
         return;
       }
-
       alert("Login successful");
+      localStorage.setItem("username", data.user.username);
+      localStorage.setItem("email", data.user.email);
       navigate("/dashboard");
-
     } catch (error) {
       alert("Server not reachable");
       console.error(error);
@@ -37,12 +34,6 @@ const Loginpage = () => {
 
   return (
     <div className="gearguard-split-screen">
-      <div className="gearguard-image-side">
-        <div className="triangle-clipper">
-          <img src={gearsignimg} alt="GearGuard Asset" className="side-asset" />
-        </div>
-      </div>
-
       <div className="gearguard-form-side">
         <div className="gearguard-card">
           <div className="gearguard-header">
@@ -74,10 +65,7 @@ const Loginpage = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-                <span
-                  className="eye-btn"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
+                <span className="eye-btn" onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? "HIDE" : "SHOW"}
                 </span>
               </div>
@@ -90,14 +78,17 @@ const Loginpage = () => {
           </form>
 
           <p className="footer-link">
-            Don’t have an account?{" "}
-            <span onClick={() => navigate("/signuppage")}>
-              Create Account
-            </span>
+            Don’t have an account? <span onClick={() => navigate("/signuppage")}>Create Account</span>
           </p>
           <p className="footer-link">
             <span onClick={() => navigate("/")}>← Back to Home</span>
           </p>
+        </div>
+      </div>
+
+      <div className="gearguard-image-side">
+        <div className="rectangle-container">
+          <img src={gearsignimg} alt="GearGuard Asset" className="side-asset" />
         </div>
       </div>
     </div>

@@ -7,7 +7,9 @@ const authRoutes = require("./routes/authroutes");
 const forgotRoutes = require("./routes/forgotroutes");
 const workCenterRoutes = require("./routes/workCenterRoutes");
 const teamRoutes = require("./routes/teamRoutes");
+const maintenanceRoutes = require("./routes/maintenanceRoutes");
 const requestRoutes = require("./routes/requestRoutes");
+const equipmentRoutes = require("./routes/equipmentRoutes");
 
 const app = express();
 
@@ -25,6 +27,10 @@ app.use("/api", authRoutes);
 app.use("/api", forgotRoutes);
 app.use("/api", workCenterRoutes);
 app.use("/api", teamRoutes);
-app.use("/api", requestRoutes);
+app.use("/api/maintenance", maintenanceRoutes);
+app.use("/api/requests", requestRoutes);
+app.use("/api/equipment", equipmentRoutes);
+
+
 
 module.exports = app;

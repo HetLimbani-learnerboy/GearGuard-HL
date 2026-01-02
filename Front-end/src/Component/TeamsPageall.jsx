@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
+import Sidebar from "./Sidebar"; 
 import "./TeamsPageall.css";
 
 const TeamsPageall = () => {
   const [teams, setTeams] = useState([]);
   const [search, setSearch] = useState("");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); 
 
   useEffect(() => {
     fetch(`http://localhost:3021/api/teams?search=${search}`)
@@ -14,9 +16,17 @@ const TeamsPageall = () => {
 
   return (
     <div className="teams-page">
-      {/* Header */}
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+
       <div className="teams-header">
-        <h1>Teams Directory</h1>
+        <div className="header-top-nav">
+          <button className="menu-toggle-btn" onClick={() => setIsSidebarOpen(true)}>
+            <div className="bar"></div>
+            <div className="bar"></div>
+            <div className="bar"></div>
+          </button>
+          <h1>Teams Directory</h1>
+        </div>
         <p>View and manage all maintenance teams across locations.</p>
 
         <input
@@ -28,7 +38,6 @@ const TeamsPageall = () => {
         />
       </div>
 
-      {/* Table Card */}
       <div className="teams-card">
         <table className="teams-table">
           <thead>
@@ -39,27 +48,16 @@ const TeamsPageall = () => {
               <th>Total Members</th>
             </tr>
           </thead>
-
           <tbody>
             {teams.length === 0 ? (
-              <tr>
-                <td colSpan="4" className="empty-text">
-                  No teams found
-                </td>
-              </tr>
+              <tr><td colSpan="4" className="empty-text">No teams found</td></tr>
             ) : (
               teams.map((team) => (
                 <tr key={team._id}>
-                  <td className="team-name">{team.team_name}</td>
-                  <td>{team.company_location}</td>
-                  <td className="members">
-                    {team.team_members.join(", ")}
-                  </td>
-                  <td>
-                    <span className="count-badge">
-                      {team.team_members.length}
-                    </span>
-                  </td>
+                  <td className="team-name" data-label="Team Name">{team.team_name}</td>
+                  <td data-label="Location">{team.company_location}</td>
+                  <td className="members" data-label="Members">{team.team_members.join(", ")}</td>
+                  <td data-label="Total"><span className="count-badge">{team.team_members.length}</span></td>
                 </tr>
               ))
             )}

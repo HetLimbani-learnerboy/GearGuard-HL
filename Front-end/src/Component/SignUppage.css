@@ -1,4 +1,5 @@
-/* Layout and Split Screen */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
+
 .gearguard-split-screen {
     display: flex;
     min-height: 100vh;
@@ -7,144 +8,165 @@
     overflow-x: hidden;
 }
 
-/* Triangle Clip Panel */
 .gearguard-image-side {
     flex: 1.2;
-    background-color: #0f172a;
-    position: relative;
-    clip-path: polygon(0 0, 100% 0, 85% 100%, 0% 100%);
-    overflow: hidden;
+    background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding: 40px;
+    text-align: center;
+    border-right: 1px solid #e2e8f0;
 }
 
-.side-asset {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    animation: imageEntrance 1.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+.lock-image {
+    width: 320px;
+    max-width: 85%;
+    height: auto;
+    margin-bottom: 30px;
+    filter: drop-shadow(0 20px 30px rgba(37, 99, 235, 0.15));
+    animation: float 5s ease-in-out infinite;
 }
 
-/* Form Panel */
+.gearguard-image-side h2 {
+    color: #1e40af;
+    font-size: 40px;
+    font-weight: 900;
+    margin: 10px 0;
+    letter-spacing: -1px;
+}
+
+.gearguard-image-side p {
+    color: #475569;
+    font-size: 18px;
+    font-weight: 500;
+    max-width: 300px;
+}
+
 .gearguard-form-side {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 40px;
+    padding: 60px 40px;
+    background-color: #ffffff;
 }
 
 .gearguard-card {
     width: 100%;
-    max-width: 400px;
-    animation: slideInRight 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    max-width: 420px;
+    animation: fadeInForm 0.8s ease-out;
 }
 
-/* Headers */
 .gearguard-title {
     color: #0f172a;
-    font-size: 34px;
+    font-size: 36px;
     font-weight: 900;
     margin: 0;
-    letter-spacing: -1px;
+    letter-spacing: -1.5px;
 }
 
 .gearguard-subtitle {
     color: #64748b;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
+    font-size: 16px;
 }
 
 .gearguard-subtitle b {
     color: #2563eb;
 }
 
-/* Form Styles */
 .gearguard-form {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 20px;
 }
 
 .form-group label {
-    color: #475569;
-    font-size: 12px;
-    font-weight: 800;
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 900;
     text-transform: uppercase;
     display: block;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
 }
 
 .form-group input {
     width: 100%;
-    padding: 14px;
-    background: #f8fafc;
+    padding: 16px;
+    background: #ffffff;
     border: 2px solid #e2e8f0;
-    border-radius: 10px;
+    border-radius: 12px;
     color: #0f172a;
     font-size: 15px;
-    transition: 0.3s;
+    transition: all 0.25s ease;
     box-sizing: border-box;
 }
 
 .form-group input:focus {
     border-color: #2563eb;
-    background: #ffffff;
     outline: none;
     box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
 
-/* Password Toggle logic */
 .pass-box {
     position: relative;
 }
 
 .eye-btn {
     position: absolute;
-    right: 15px;
+    right: 18px;
     top: 50%;
     transform: translateY(-50%);
     color: #2563eb;
     font-size: 10px;
     font-weight: 900;
     cursor: pointer;
+    user-select: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
 }
 
-/* Register Button */
-.gearguard-btn {
-    padding: 16px;
-    background: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: 800;
-    cursor: pointer;
-    transition: 0.3s;
-    text-transform: uppercase;
-    margin-top: 10px;
+.eye-btn:hover {
+    opacity: 1;
 }
 
 .password-rules {
-    margin: 0px 0 0px 0;
-    padding: 0px 10px;
+    padding: 5px 2px;
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
 .password-rules p {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     margin: 0;
-    transition: color 0.25s ease;
+    display: flex;
+    align-items: center;
 }
 
+.gearguard-btn {
+    padding: 18px;
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    margin-top: 15px;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
 
 .gearguard-btn:hover {
     background: #1e40af;
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
 }
 
 .footer-link {
@@ -158,64 +180,64 @@
     color: #2563eb;
     font-weight: 800;
     cursor: pointer;
+    margin: 0 5px;
 }
 
-/* Animations */
-@media (max-width: 1024px) {
-    .gearguard-image-side {
-        flex: 1;
-        clip-path: polygon(0 0, 100% 0, 90% 100%, 0% 100%);
+.footer-link span:hover {
+    text-decoration: underline;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
     }
-    .gearguard-title {
-        font-size: 28px;
+
+    50% {
+        transform: translateY(-20px);
     }
 }
 
-/* For Tablets (Portrait) */
+@keyframes fadeInForm {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 @media (max-width: 900px) {
     .gearguard-image-side {
-        display: none; /* Hide the image side on tablets to focus on the form */
+        display: none;
     }
+
     .gearguard-form-side {
-        flex: 1;
-        padding: 20px;
+        background-color: #f8fafc;
     }
+
     .gearguard-card {
-        max-width: 450px;
+        background: white;
+        padding: 40px;
+        border-radius: 24px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
     }
 }
 
-/* For Small Mobile Devices */
 @media (max-width: 480px) {
     .gearguard-form-side {
-        padding: 15px;
-        align-items: flex-start; /* Better scrolling on small phones */
+        padding: 20px;
     }
-    .gearguard-title {
-        font-size: 24px;
-        margin-top: 20px;
-    }
-    .gearguard-subtitle {
-        font-size: 13px;
-    }
-    .password-rules {
-        grid-template-columns: 1fr; /* Single column on phones */
-    }
-    .gearguard-btn {
-        padding: 14px;
-        font-size: 14px;
-    }
-    .form-group input {
-        padding: 12px;
-        font-size: 14px;
-    }
-}
 
-@media (max-height: 700px) {
-    .gearguard-split-screen {
-        align-items: flex-start;
-        padding-top: 20px;
-        padding-bottom: 20px;
-        overflow-y: auto;
+    .gearguard-card {
+        padding: 25px;
+    }
+
+    .gearguard-title {
+        font-size: 28px;
     }
 }

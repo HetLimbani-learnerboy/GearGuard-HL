@@ -1,156 +1,205 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./TeamsPage.css";
 
 const TeamsPage = () => {
+  const navigate = useNavigate();
   const [teams, setTeams] = useState([]);
   const [search, setSearch] = useState("");
+  const [showAddForm, setShowAddForm] = useState(false);
   const [selectedTeam, setSelectedTeam] = useState(
     JSON.parse(localStorage.getItem("selectedTeam")) || null
   );
 
+  const [newTeam, setNewTeam] = useState({
+    team_name: "",
+    company_location: "",
+    memberCount: "",
+    team_members: []
+  });
+
   useEffect(() => {
+    fetchTeams();
+  }, [search]);
+
+  const fetchTeams = () => {
     fetch(`http://localhost:3021/api/teams?search=${search}`)
       .then((res) => res.json())
       .then((data) => setTeams(data))
       .catch((err) => console.error("Fetch error:", err));
-  }, [search]);
+  };
 
-  const handleSelect = (team) => {
-  localStorage.setItem("selectedTeam", JSON.stringify(team));
-  navigate(-1); // ⬅️ go back to modal page
-};
+  const handleMemberCountChange = (count) => {
+    const n = parseInt(count) || 0;
+    const members = new Array(n).fill("");
+    setNewTeam({ ...newTeam, memberCount: count, team_members: members });
+  };
+
+  const handleMemberNameChange = (index, name) => {
+    const updatedMembers = [...newTeam.team_members];
+    updatedMembers[index] = name;
+    setNewTeam({ ...newTeam, team_members: updatedMembers });
+  };
+
+  const handleAddTeamSubmit = async (e) => {
+    e.preventDefault();
+
+    if (newTeam.team_members.some(m => m.trim() === "")) {
+      alert("Please fill in all team member names.");
+      return;
+    }
+
+    try {
+      const res = await fetch("http://localhost:3021/api/teams", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          team_name: newTeam.team_name,
+          company_location: newTeam.company_location,
+          team_members: newTeam.team_members
+        })
+      });
+      if (res.ok) {
+        setShowAddForm(false);
+        setNewTeam({ team_name: "", company_location: "", memberCount: "", team_members: [] });
+        fetchTeams();
+      }
+    } catch (err) {
+      console.error("Error adding team:", err);
+    }
+  };
+
+  const handleContinue = () => {
+    if (!selectedTeam) {
+      alert("Please select a team to continue.");
+      return;
+    }
+    localStorage.setItem("selectedTeam", JSON.stringify(selectedTeam));
+    navigate(-1);
+  };
 
   return (
-    <div style={{ padding: 30 }}>
-      <h2>Teams Directory</h2>
+    <div className="teams-master-wrapper">
+      <div className="teams-master-header">
+        <div className="title-section">
+          <h2>Select Maintenance Team</h2>
+          <p>Assign a qualified team for the service request</p>
+        </div>
+        <div className="teams-header-actions">
 
-      {/* Search */}
-      <input
-        type="text"
-        placeholder="Search by team name or location..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        style={searchStyle}
-      />
+          <button className="teams-btn-add" onClick={() => setShowAddForm(!showAddForm)}>
+            {showAddForm ? "Close Form" : "+ Add New Team"}
+          </button>
 
-      {/* Table */}
-      <div style={{ overflowX: "auto" }}>
-        <table style={tableStyle}>
+          <button className="teams-info-btn" onClick={() => navigate('/equipmentdetails')}>View Equipment Info.</button>
+          <button className="teams-btn-secondary" onClick={() => navigate(-1)}>Cancel</button>
+          <button
+            className={`teams-btn-primary ${!selectedTeam ? 'disabled' : ''}`}
+            onClick={handleContinue}
+          >
+            Continue Selection
+          </button>
+        </div>
+      </div>
+
+      {showAddForm && (
+        <div className="add-team-card">
+          <form onSubmit={handleAddTeamSubmit}>
+            <div className="form-grid">
+              <div className="field-block">
+                <label>Team Name <span className="star">*</span></label>
+                <input
+                  required
+                  placeholder="e.g. Tau Tools"
+                  value={newTeam.team_name}
+                  onChange={(e) => setNewTeam({ ...newTeam, team_name: e.target.value })}
+                />
+              </div>
+              <div className="field-block">
+                <label>Company Location <span className="star">*</span></label>
+                <input
+                  required
+                  placeholder="e.g. Amsterdam, Netherlands"
+                  value={newTeam.company_location}
+                  onChange={(e) => setNewTeam({ ...newTeam, company_location: e.target.value })}
+                />
+              </div>
+              <div className="field-block">
+                <label>Number of Members <span className="star">*</span></label>
+                <input
+                  required
+                  type="number"
+                  min="1"
+                  value={newTeam.memberCount}
+                  placeholder="e.g. 3"
+                  onChange={(e) => handleMemberCountChange(e.target.value)}
+                />
+              </div>
+            </div>
+
+            {newTeam.team_members.length > 0 && (
+              <div className="members-dynamic-list">
+                <h4>Member Details <span className="sub-hint">(All fields required)</span></h4>
+                <div className="members-grid">
+                  {newTeam.team_members.map((name, index) => (
+                    <div className="field-block" key={index}>
+                      <label>Team Member {index + 1} <span className="star">*</span></label>
+                      <input
+                        required
+                        placeholder="Enter full name"
+                        value={name}
+                        onChange={(e) => handleMemberNameChange(index, e.target.value)}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div className="form-footer-btns">
+              <button type="submit" className="teams-btn-primary submit-new-team">Save New Team</button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      <div className="teams-search-bar">
+        <input
+          type="text"
+          placeholder="Search by team name or location..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
+
+      <div className="teams-table-card">
+        <table className="teams-table">
           <thead>
             <tr>
-              <th style={thStyle}>Select</th>
-              <th style={thStyle}>Team Name</th>
-              <th style={thStyle}>Company Location</th>
-              <th style={thStyle}>Team Members</th>
-              <th style={thStyle}>Total Members</th>
+              <th className="col-radio">Select</th>
+              <th>Team Name</th>
+              <th>Company Location</th>
+              <th>Team Members</th>
+              <th>Total</th>
             </tr>
           </thead>
-
           <tbody>
-            {teams.length === 0 ? (
-              <tr>
-                <td colSpan="5" style={emptyStyle}>
-                  No teams found
+            {teams.map((team) => (
+              <tr key={team._id} className={selectedTeam?._id === team._id ? "row-active" : ""} onClick={() => setSelectedTeam(team)}>
+                <td className="col-radio">
+                  <div className={`custom-radio ${selectedTeam?._id === team._id ? 'checked' : ''}`}></div>
                 </td>
+                <td><strong>{team.team_name}</strong></td>
+                <td>{team.company_location}</td>
+                <td className="member-list-cell">{team.team_members.join(", ")}</td>
+                <td><span className="count-badge">{team.team_members.length}</span></td>
               </tr>
-            ) : (
-              teams.map((team) => (
-                <tr
-                  key={team._id}
-                  style={{
-                    background:
-                      selectedTeam?._id === team._id ? "#eef2ff" : "white"
-                  }}
-                >
-                  <td style={tdStyle}>
-                    <button
-                      onClick={() => handleSelect(team)}
-                      style={{
-                        ...selectBtn,
-                        background:
-                          selectedTeam?._id === team._id
-                            ? "#22c55e"
-                            : "#2563eb"
-                      }}
-                    >
-                      {selectedTeam?._id === team._id
-                        ? "Selected"
-                        : "Select"}
-                    </button>
-                  </td>
-
-                  <td style={tdStyle}>{team.team_name}</td>
-                  <td style={tdStyle}>{team.company_location}</td>
-                  <td style={tdStyle}>
-                    {team.team_members.join(", ")}
-                  </td>
-                  <td style={tdStyle}>{team.team_members.length}</td>
-                </tr>
-              ))
-            )}
+            ))}
           </tbody>
         </table>
       </div>
-
-      {/* Selected Team Display */}
-      {selectedTeam && (
-        <div style={selectedBox}>
-          <h3>Selected Team</h3>
-          <p><b>Name:</b> {selectedTeam.team_name}</p>
-          <p><b>Location:</b> {selectedTeam.company_location}</p>
-          <p><b>Members:</b> {selectedTeam.team_members.join(", ")}</p>
-        </div>
-      )}
     </div>
   );
-};
-
-/* ---------------- STYLES ---------------- */
-
-const searchStyle = {
-  padding: 10,
-  width: 320,
-  marginBottom: 20
-};
-
-const tableStyle = {
-  width: "100%",
-  borderCollapse: "collapse",
-  minWidth: 800
-};
-
-const thStyle = {
-  padding: "12px",
-  background: "#f8fafc",
-  borderBottom: "2px solid #cbd5e1",
-  textAlign: "left",
-  fontWeight: 700
-};
-
-const tdStyle = {
-  padding: "12px",
-  borderBottom: "1px solid #e2e8f0"
-};
-
-const selectBtn = {
-  padding: "6px 12px",
-  color: "#fff",
-  border: "none",
-  borderRadius: 6,
-  cursor: "pointer",
-  fontWeight: 600
-};
-
-const emptyStyle = {
-  textAlign: "center",
-  padding: 20
-};
-
-const selectedBox = {
-  marginTop: 30,
-  padding: 20,
-  borderRadius: 10,
-  background: "#f1f5f9",
-  border: "1px solid #cbd5e1"
 };
 
 export default TeamsPage;

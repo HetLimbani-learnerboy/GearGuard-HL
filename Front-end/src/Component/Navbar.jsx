@@ -2,52 +2,63 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
-export default function Navbar({ title }) {
+export default function Navbar({ title = "GearGuard Dashboard" }) {
   const [openProfile, setOpenProfile] = useState(false);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const profileRef = useRef(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const closeOnOutside = (e) => {
+    const storedUsername = localStorage.getItem("username");
+    const storedEmail = localStorage.getItem("email");
+    if (storedUsername) setUsername(storedUsername.replace(/"/g, ""));
+    if (storedEmail) setEmail(storedEmail.replace(/"/g, ""));
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
       if (profileRef.current && !profileRef.current.contains(e.target)) {
         setOpenProfile(false);
       }
     };
-    document.addEventListener("mousedown", closeOnOutside);
-    return () => document.removeEventListener("mousedown", closeOnOutside);
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
-    <header className="top-navbar">
-      {/* LEFT: PAGE TITLE */}
-      <div className="navbar-left">
-        <h2>{title}</h2>
+    <header className="gg-navbar">
+      <div className="gg-nav-center">
+        <h1 className="gg-nav-brand">{title}</h1>
       </div>
 
-      {/* RIGHT: SEARCH + PROFILE */}
-      <div className="navbar-right">
-        <input
-          type="text"
-          className="nav-search"
-          placeholder="Search..."
-        />
-
-        <div className="profile-wrapper" ref={profileRef}>
+      <div className="gg-nav-right">
+        <div className="gg-profile-container" ref={profileRef}>
           <div
-            className="profile-icon"
-            onClick={() => setOpenProfile(!openProfile)}
+            className="gg-avatar-trigger"
+            onClick={() => setOpenProfile((prev) => !prev)}
           >
-            AN
+            {username ? username.charAt(0).toUpperCase() : "U"}
           </div>
 
           {openProfile && (
-            <div className="profile-dropdown">
-              <p className="profile-name">Aman Nair</p>
-              <p className="profile-email">aman.nair@gearguard.com</p>
+            <div className="gg-profile-menu">
+              <div className="gg-user-meta">
+                <p className="gg-user-name">Name: {username || "User"}</p>
+                <p className="gg-user-email">
+                  Email: {email || "user@gearguard.com"}
+                </p>
+              </div>
+
+              <div className="gg-menu-divider"></div>
 
               <button
-                className="logout-btn"
-                onClick={() => navigate("/loginpage")}
+                className="gg-logout-action"
+                onClick={() => {
+                  localStorage.clear();
+                  navigate("/loginpage");
+                }}
               >
                 Logout
               </button>
@@ -55,6 +66,7 @@ export default function Navbar({ title }) {
           )}
         </div>
       </div>
+
     </header>
   );
 }

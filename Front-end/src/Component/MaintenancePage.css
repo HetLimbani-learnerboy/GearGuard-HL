@@ -1,149 +1,238 @@
-/* PAGE BASE */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
 .maintenance-wrapper {
+  display: flex;
   min-height: 100vh;
-  padding: 70px 8%;
-  background: linear-gradient(180deg, #f8faff 0%, #ffffff 75%);
-  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
+  background-color: #f1f5f9;
+  font-family: 'Inter', sans-serif;
 }
 
-/* HEADER */
-.top-bar {
+.main-content {
+  flex: 1;
+  padding: 24px;
+  overflow-x: auto;
+}
+
+.maintenance-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 50px;
+  margin-bottom: 24px;
+  background: white;
+  padding: 16px 24px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.top-bar h2 {
-  font-size: 34px;
-  font-weight: 900;
-  color: #0f172a;
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
-.subtitle {
-  margin-top: 6px;
-  font-size: 15px;
-  color: #64748b;
-}
-
-/* PRIMARY BUTTON */
-.primary-btn {
-  background: linear-gradient(90deg, #2563eb, #1e40af);
-  color: white;
-  border: none;
-  padding: 14px 30px;
-  border-radius: 14px;
+.maintenance-header h2 {
+  font-size: 24px;
   font-weight: 800;
-  cursor: pointer;
-  transition: 0.3s;
+  color: #0f172a;
+  letter-spacing: -0.5px;
 }
 
-.primary-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(37, 99, 235, 0.35);
-}
-
-/* KANBAN GRID */
 .kanban-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 30px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  min-height: calc(100vh - 180px);
 }
 
-/* COLUMN */
-.kanban-column {
-  background: #ffffff;
-  border-radius: 22px;
-  padding: 20px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 18px 36px rgba(37, 99, 235, 0.08);
+.kanban-column-wrapper {
+  flex: 1;
+  min-width: 310px;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
 }
 
 .column-title {
-  font-size: 14px;
-  font-weight: 900;
-  color: #2563eb;
-  margin-bottom: 18px;
-  letter-spacing: 0.6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+  padding: 0 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* CARD */
+.count-pill {
+  background: #cbd5e1;
+  color: #334155;
+  padding: 2px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+}
+
+.kanban-column {
+  background: #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+  min-height: 600px;
+  transition: all 0.2s ease;
+}
+
+.kanban-column.dragging-over {
+  background: #cbd5e1;
+  outline: 2px dashed #94a3b8;
+}
+
 .kanban-card {
   background: white;
   padding: 16px;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  margin-bottom: 14px;
-  cursor: pointer;
-  transition: 0.3s;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+  margin-bottom: 12px;
+  border: 1px solid transparent;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
+  cursor: grab;
 }
 
 .kanban-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  border-color: #cbd5e1;
 }
 
-/* TEXT */
-.req-title {
-  font-weight: 800;
-  color: #0f172a;
-  margin-bottom: 4px;
+.kanban-card.dragging {
+  cursor: grabbing;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+  transform: rotate(2deg);
+  opacity: 0.9;
 }
 
-.req-meta {
-  font-size: 13px;
-  color: #64748b;
+.kanban-card.priority-3 {
+  border-left: 4px solid #ef4444;
 }
 
-/* STATUS BADGES */
-.status-badge {
-  display: inline-block;
-  margin-top: 10px;
-  padding: 6px 14px;
-  border-radius: 999px;
+.kanban-card.priority-2 {
+  border-left: 4px solid #f59e0b;
+}
+
+.kanban-card.priority-1 {
+  border-left: 4px solid #3b82f6;
+}
+
+.kanban-card.priority-0 {
+  border-left: 4px solid #94a3b8;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.req-id {
   font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  font-family: monospace;
+}
+
+.card-subject {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-row {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0;
+  display: flex;
+  gap: 4px;
+}
+
+.info-row strong {
+  color: #475569;
+  min-width: 50px;
+}
+
+.card-footer {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-box span {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.priority-indicator {
+  font-size: 10px;
   font-weight: 800;
-  text-transform: capitalize;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
 }
 
-.status-badge.new {
-  background: #e5e7eb;
-  color: #334155;
-}
-
-.status-badge.in_progress {
-  background: #dbeafe;
-  color: #1e40af;
-}
-
-.status-badge.repaired {
-  background: #dcfce7;
-  color: #166534;
-}
-
-.status-badge.scrap {
+.p-3 {
   background: #fee2e2;
-  color: #7f1d1d;
+  color: #ef4444;
 }
 
-/* FOOTER */
-.back-footer {
-  margin-top: 60px;
-  text-align: center;
+.p-2 {
+  background: #fef3c7;
+  color: #d97706;
 }
 
-.back-btn {
-  background: #ffffff;
-  border: 2px solid #2563eb;
+.p-1 {
+  background: #dbeafe;
   color: #2563eb;
-  padding: 12px 28px;
-  border-radius: 14px;
-  font-weight: 800;
-  cursor: pointer;
-  transition: 0.3s;
 }
 
-.back-btn:hover {
-  background: #2563eb;
-  color: white;
+.type-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #f1f5f9;
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.menu-toggle-btn {
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.menu-toggle-btn:hover {
+  background: #f1f5f9;
+}
+
+.bar {
+  width: 20px;
+  height: 2px;
+  background: #475569;
+  margin: 3px 0;
+  border-radius: 2px;
 }

@@ -1,166 +1,259 @@
-/* ===============================
-   PAGE BASE
-================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
 
-.teams-page {
-  min-height: 100vh;
-  background: linear-gradient(180deg, #f8faff 0%, #ffffff 70%);
-  padding: 80px 10%;
-  font-family: "Inter", "Segoe UI", Roboto, sans-serif;
+body {
+  background-color: #f8fafc;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
 }
 
-/* ===============================
-   HEADER
-================================ */
+.teams-page {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
 .teams-header {
-  text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 40px;
+  animation: fadeInDown 0.8s ease-out;
 }
 
 .teams-header h1 {
-  font-size: 40px;
-  font-weight: 900;
   color: #0f172a;
+  font-size: 36px;
+  font-weight: 800;
+  margin: 0 0 10px 0;
+  letter-spacing: -1px;
 }
 
 .teams-header p {
-  margin-top: 10px;
-  font-size: 16px;
   color: #64748b;
+  font-size: 16px;
+  margin-bottom: 25px;
 }
 
-/* ===============================
-   SEARCH
-================================ */
-
 .search-input {
-  margin-top: 28px;
-  width: 420px;
-  max-width: 100%;
-  padding: 14px 18px;
-  border-radius: 12px;
+  width: 100%;
+  max-width: 450px;
+  padding: 14px 20px;
   border: 2px solid #e2e8f0;
+  border-radius: 12px;
   font-size: 15px;
   outline: none;
-  transition: 0.3s;
+  transition: all 0.3s ease;
+  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .search-input:focus {
   border-color: #2563eb;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
 }
-
-/* ===============================
-   CARD
-================================ */
 
 .teams-card {
   background: #ffffff;
-  border-radius: 24px;
-  padding: 28px;
-  box-shadow: 0 30px 60px rgba(37, 99, 235, 0.12);
-  animation: fadeUp 0.6s ease-out;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  animation: slideUpFade 0.8s ease-out;
 }
-
-/* ===============================
-   TABLE
-================================ */
 
 .teams-table {
   width: 100%;
   border-collapse: collapse;
-}
-
-.teams-table thead {
-  background: linear-gradient(90deg, #2563eb, #1e40af);
-}
-
-.teams-table th {
-  padding: 16px;
-  font-size: 14px;
-  font-weight: 800;
-  color: white;
   text-align: left;
 }
 
-.teams-table td {
-  padding: 16px;
-  font-size: 14px;
-  color: #0f172a;
-  border-bottom: 1px solid #e2e8f0;
+.teams-table th {
+  background-color: #f8fafc;
+  padding: 18px 24px;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #f1f5f9;
 }
 
-/* Hover */
 .teams-table tbody tr {
-  transition: background 0.3s, transform 0.2s;
+  transition: background 0.2s ease;
 }
 
 .teams-table tbody tr:hover {
-  background: #f1f5ff;
+  background-color: #f1f5f9;
 }
 
-/* Team Name Highlight */
+.teams-table td {
+  padding: 16px 24px;
+  color: #334155;
+  font-size: 15px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
 .team-name {
   font-weight: 700;
   color: #2563eb;
 }
 
-/* Members */
 .members {
-  color: #475569;
-}
-
-/* Badge */
-.count-badge {
-  display: inline-block;
-  min-width: 28px;
-  padding: 6px 10px;
-  text-align: center;
-  background: #2563eb;
-  color: white;
-  border-radius: 999px;
-  font-weight: 800;
-  font-size: 12px;
-}
-
-/* Empty */
-.empty-text {
-  padding: 40px;
-  text-align: center;
   color: #64748b;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.count-badge {
+  background: #eff6ff;
+  color: #2563eb;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 800;
+  font-size: 13px;
+  display: inline-block;
+}
+
+.empty-text {
+  text-align: center;
+  padding: 50px !important;
+  color: #94a3b8;
   font-weight: 600;
 }
 
-/* ===============================
-   ANIMATION
-================================ */
+.back-button {
+  margin-top: 30px;
+  animation: fadeIn 1.2s ease;
+}
 
-@keyframes fadeUp {
+.back-button button {
+  padding: 12px 24px;
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-button button:hover {
+  background: #1e40af;
+  transform: translateX(-5px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+@keyframes fadeInDown {
   from {
     opacity: 0;
-    transform: translateY(24px);
+    transform: translateY(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
-/* ===============================
-   RESPONSIVE
-================================ */
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
 
-@media (max-width: 768px) {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 900px) {
   .teams-page {
-    padding: 50px 6%;
+    padding: 20px;
   }
 
   .teams-header h1 {
-    font-size: 30px;
+    font-size: 28px;
   }
 
-  .teams-table {
-    font-size: 13px;
+  .teams-table thead {
+    display: none;
   }
+
+  .teams-table,
+  .teams-table tbody,
+  .teams-table tr,
+  .teams-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .teams-table tr {
+    margin-bottom: 20px;
+    border: 1px solid #e2e8f0;
+    border-radius: 15px;
+    padding: 10px;
+  }
+
+  .teams-table td {
+    text-align: right;
+    padding: 10px 15px;
+    border: none;
+    position: relative;
+  }
+
+  .teams-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 15px;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 11px;
+    color: #94a3b8;
+  }
+
+  .members {
+    text-align: left;
+    padding-top: 25px;
+  }
+}
+
+.header-left-group,
+.header-top-nav {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.menu-toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  transition: transform 0.2s ease;
+}
+
+.menu-toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: #0f172a;
+  border-radius: 2px;
 }

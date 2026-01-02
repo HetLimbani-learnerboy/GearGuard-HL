@@ -15,77 +15,74 @@ const WorkCenterPage = () => {
       .catch((err) => console.error("API Error:", err));
   }, [search]);
 
-  const handleConfirmSelection = () => {
+  const handleContinue = () => {
     if (!selectedWC) {
-      alert("Please select a work center from the table.");
+      alert("Please select a work center to continue.");
       return;
     }
-    // Store the object for the modal to pick up
     localStorage.setItem("selectedWorkCenter", JSON.stringify(selectedWC));
-    // Navigate back to the maintenance page where modal was open
-    navigate(-1); 
+    navigate(-1);
   };
 
   return (
-    <div className="workcenter-container">
-      <div className="header-flex">
-        <h2 className="page-title">Work Center Master</h2>
-        <div className="action-btns">
-            <button className="back-btn" onClick={() => navigate(-1)}>Back</button>
-            <button className="confirm-selection-btn" onClick={handleConfirmSelection}>
-                Confirm Selection
-            </button>
+    <div className="wc-master-wrapper">
+      <div className="wc-master-header">
+        <div className="title-section">
+          <h2>Select Work Center</h2>
+          <p>Choose the operational hub for this maintenance task</p>
+        </div>
+        <div className="wc-header-actions">
+          <button className="wc-btn-secondary" onClick={() => navigate(-1)}>Cancel</button>
+          <button
+            className={`wc-btn-primary ${!selectedWC ? 'disabled' : ''}`}
+            onClick={handleContinue}
+          >
+            Continue Selection
+          </button>
         </div>
       </div>
 
-      <div className="search-box">
+      <div className="wc-search-bar">
         <input
-          className="search-input"
-          placeholder="Search by center name, code, or tag..."
+          type="text"
+          placeholder="Filter by name, code, or type..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
-      <div className="table-container">
-        <table className="workcenter-table">
+      <div className="wc-table-card">
+        <table className="wc-table">
           <thead>
             <tr>
-              <th>Select</th>
+              <th className="col-radio">Select</th>
               <th>Work Center</th>
-              <th>Code</th>
-              <th>Tag</th>
-              <th>Alternative Center</th>
-              <th>Cost/Hr</th>
+              <th>Identifier Code</th>
+              <th>Category</th>
+              <th>Cost / Hour</th>
               <th>OEE Target</th>
             </tr>
           </thead>
           <tbody>
             {workCenters.length > 0 ? (
               workCenters.map((wc) => (
-                <tr 
-                    key={wc._id} 
-                    className={selectedWC?._id === wc._id ? "selected-row" : ""}
-                    onClick={() => setSelectedWC(wc)}
+                <tr
+                  key={wc._id}
+                  className={selectedWC?._id === wc._id ? "row-active" : ""}
+                  onClick={() => setSelectedWC(wc)}
                 >
-                  <td>
-                    <input
-                      type="radio"
-                      name="wc-radio"
-                      checked={selectedWC?._id === wc._id}
-                      onChange={() => setSelectedWC(wc)}
-                    />
+                  <td className="col-radio">
+                    <div className={`custom-radio ${selectedWC?._id === wc._id ? 'checked' : ''}`}></div>
                   </td>
-                  <td>{wc.work_center}</td>
-                  <td>{wc.code}</td>
-                  <td><span className={`tag-pill ${wc.tag}`}>{wc.tag}</span></td>
-                  <td>{wc.alternative_work_center || "None"}</td>
+                  <td><strong>{wc.work_center}</strong></td>
+                  <td><code className="wc-code-badge">{wc.code}</code></td>
+                  <td><span className={`wc-tag-pill ${wc.tag}`}>{wc.tag}</span></td>
                   <td>₹{wc.cost_per_hour}</td>
                   <td>{wc.oee_target}%</td>
                 </tr>
               ))
             ) : (
-              <tr><td colSpan="7" style={{textAlign:'center', padding: '20px'}}>No work centers found.</td></tr>
+              <tr><td colSpan="6" className="wc-no-data">Scanning for work centers...</td></tr>
             )}
           </tbody>
         </table>

@@ -14,7 +14,7 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .logo {
@@ -157,7 +157,7 @@
 .feature-card:hover {
   transform: translateY(-10px);
   border-color: #2563eb;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
 }
 
 .icon-circle {
@@ -173,7 +173,6 @@
   margin-bottom: 20px;
 }
 
-/* WORKFLOW */
 .workflow {
   padding: 100px 8%;
   background: #1c336a;
@@ -195,18 +194,18 @@
 .step {
   flex: 1;
   min-width: 200px;
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
   padding: 30px;
   border-radius: 15px;
   text-align: center;
   font-weight: 700;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transition: 0.4s;
 }
 
 .step:hover {
   transform: translateY(-8px);
-  box-shadow: 0 18px 35px rgba(0,0,0,0.4);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.4);
 }
 
 .step h4 {
@@ -237,9 +236,20 @@
 }
 
 @keyframes arrowPulse {
-  0% { transform: translateX(0); opacity: 0.5; }
-  50% { transform: translateX(8px); opacity: 1; }
-  100% { transform: translateX(0); opacity: 0.5; }
+  0% {
+    transform: translateX(0);
+    opacity: 0.5;
+  }
+
+  50% {
+    transform: translateX(8px);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 0.5;
+  }
 }
 
 .footer {
@@ -251,21 +261,56 @@
 }
 
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideInRight {
-  from { opacity: 0; transform: translateX(100px); }
-  to { opacity: 1; transform: translateX(0); }
+  from {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @media (max-width: 1024px) {
-  .hero-title { font-size: 48px; }
-  .hero-image-side { clip-path: none; height: 400px; order: -1; }
-  .hero { flex-direction: column; padding: 40px 8%; text-align: center; }
-  .hero-content { display: flex; flex-direction: column; align-items: center; }
-  .hero-description { margin-left: auto; margin-right: auto; }
+  .hero-title {
+    font-size: 48px;
+  }
+
+  .hero-image-side {
+    clip-path: none;
+    height: 400px;
+    order: -1;
+  }
+
+  .hero {
+    flex-direction: column;
+    padding: 40px 8%;
+    text-align: center;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-description {
+    margin-left: auto;
+    margin-right: auto;
+  }
 
   .workflow-arrow {
     display: none;
@@ -273,7 +318,15 @@
 }
 
 @media (max-width: 768px) {
-  .nav-links { display: none; }
-  .hero-title { font-size: 36px; }
-  .feature-grid { grid-template-columns: 1fr; }
+  .nav-links {
+    display: none;
+  }
+
+  .hero-title {
+    font-size: 36px;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./LandingPageStyle.css";
-import gearLogo from "../assets/GearGuard-img.png"; 
+import gearLogo from "../assets/GearGuard-img.png";
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -46,7 +46,6 @@ const LandingPage = () => {
         </div>
       </header>
 
-      {/* FEATURES */}
       <section className="features" id="features">
         <h3 className="section-title">Why GearGuard?</h3>
         <div className="feature-grid">
@@ -73,7 +72,6 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* WORKFLOW (ONLY SECTION MODIFIED) */}
       <section className="workflow" id="workflow">
         <h3 className="section-title">How It Works</h3>
 
@@ -118,4 +116,3 @@ const LandingPage = () => {
 };
 
 export default LandingPage;
- 
