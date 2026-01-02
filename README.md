@@ -1,12 +1,12 @@
 # 🛡️ Gear-Guard: The Ultimate Maintenance Tracker
 
-Gear-Guard is a professional-grade **Computerized Maintenance Management System (CMMS)** designed to bridge the gap between technical assets and workforce execution. It tracks machines, vehicles, and computers while managing the full lifecycle of maintenance requests.
+Gear-Guard is a professional-grade **Computerized Maintenance Management System (CMMS)** designed to bridge the gap between technical assets and workforce execution. It tracks Mechnical, Electronics, and IT etc. while managing the full lifecycle of maintenance requests.
 
 ---
 
 ## 👥 Meet the Team
 Developed with passion by:
-- **Het Limbani** - **Anuj Raval** - **Sahil Dobaria** - **Tirth Panchal** ---
+- **Het Limbani** - **Anuj Raval** - **Sahil Dobaria** - **Tirth Panchal** 
 
 ## 🚀 Tech Stack
 
