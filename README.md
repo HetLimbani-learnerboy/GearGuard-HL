@@ -30,7 +30,7 @@ Developed with passion by:
 | **1** | **Landing & Entry** | High-conversion entry point for the Gear-Guard ecosystem. | ![Landing](SS/SS-1.png) ![Landing2](SS/SS-2.png) |
 | **2** | **User Access** | Public routes (Signup/Login) secured via Auth Guards. | ![Signup](SS/SS-3.png) |
 | **3** | **Control Center** | Centralized dashboard for real-time asset monitoring. | ![Dashboard](SS/SS-4.png) |
-| **5** | **Execution Detail** | **Test Activity Page:** Detailed view of maintenance tasks including technician notes and asset info. | ![TestActivity](ss/SS-5.png) |
+| **5** | **Execution Detail** | **Test Activity Page:** Detailed view of maintenance tasks including technician notes and asset info. | ![TestActivity](SS/SS-5.png) |
 | **6** | **Task Management** | Kanban board featuring drag-and-drop stages. | ![Kanban](SS/SS-5.png) |
 | **7** | **Request Flow** | Structured form for creating maintenance logs with Auto-Fill. | ![Request](SS/SS-6.png) |
 | **8** | **Scheduling** | Monthly grid visualization showing priority-coded tasks. | ![Calendar](SS/SS-7.png) |
